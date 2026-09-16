@@ -16,7 +16,9 @@ A business decision-maker evaluating cyber exposure for their company. The curre
 ## Conversion Goal
 Move a user from completing the assessment and understanding their result toward a protection-related CTA.
 
-**TBD:** Final CTA proposition, copy, commitment level, and post-CTA flow.
+**Human decision (first build):** Primary CTA "See protection options" opens a minimal prototype lead panel. The result is never gated behind it. Details: `SPEC.md` → Result.
+
+**TBD:** Production CTA proposition, commitment level, and post-CTA flow.
 
 ## Scope
 The prototype should demonstrate the complete assessment-to-result journey in a browser with deterministic runtime logic and polished interaction quality.
@@ -27,12 +29,15 @@ The prototype should demonstrate the complete assessment-to-result journey in a 
 - One question per screen
 - Deterministic risk calculation
 - User-facing **LOW / MID / HIGH** result
-- Visual position on a risk scale without exposing a pseudo-precise numeric score
+- Coarse three-segment risk indicator without exposing a pseudo-precise numeric score
 - Illustrative potential financial-loss range
-- Short deterministic explanation of the main risk driver
-- Protection-oriented CTA
-- Microinteraction around calculation/result reveal
+- Short deterministic explanation of the main risk drivers
+- MFA counterfactual showing what full MFA coverage would change
+- Answer recap with Edit
+- Protection-oriented CTA with a prototype lead panel (no backend)
+- Result transition motion (no fake calculating state)
 - Back navigation with preserved answers
+- Result visible without email capture
 - Responsive browser experience
 
 ### Out of Scope
@@ -54,8 +59,19 @@ For the prototype/recruitment exercise:
 
 For a real lead-generation deployment, success metrics would need to include assessment completion, step drop-off, CTA conversion and downstream lead quality/conversion. Exact KPI targets are **TBD**.
 
+## Deviations from the Original Brief
+The original brief is in `source/Zadanie_180hb.txt`. These deliberate deviations are human-approved; rationale is recorded in `UX_RESEARCH.md`.
+
+| Brief | Project decision | Rationale |
+|---|---|---|
+| Example questions: industry, number of employees, remote work | Industry, annual revenue, MFA coverage | Revenue maps more directly to financial exposure; MFA is a concrete security control. The brief's questions were given as examples ("np."). |
+| "Estimated amount of potential losses" | Illustrative range, labelled as not an insurance quote | A single number would imply unsupported precision. |
+| Button "Zabezpiecz się" ("Protect yourself") | "See protection options" | Lower-commitment, protection-oriented wording that avoids fear framing. |
+| "Microanimations while calculating the result" | Result transition (dark → light, restrained reveal) with no calculating state | A fake calculation delay would misrepresent a deterministic lookup. |
+| UI example stack "Tailwind, shadcn/ui" | Vite + React + TypeScript with plain CSS | The brief lists these as examples ("np."); plain CSS keeps the prototype small and avoids generic component-kit styling. |
+
 ---
 
-**Status:** Product direction partially approved. CTA/post-CTA behavior and final loss model remain TBD.
+**Status:** Product direction approved for the first build, including scoring v0.2, financial-impact v0.1 ranges and first-build CTA behavior. Production CTA/post-CTA flow and any validated loss model remain TBD.
 
 **Note**: This is a living document. Distinguish approved product decisions from prototype hypotheses and production assumptions.

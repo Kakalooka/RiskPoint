@@ -6,27 +6,42 @@ RiskPoint should feel like a contemporary premium product interface rather than 
 ### Human-approved direction
 - The three assessment screens use a **dark** visual environment.
 - The result screen switches to a **light / white** visual environment.
-- The dark → light transition is semantic: **assessment → answer / clarity**. It should not be treated as arbitrary decoration.
+- The dark → light transition is semantic: **assessment / investigation → answer / clarity**. It happens once and should not be treated as arbitrary decoration.
 - Keep the interface visually restrained: one dominant task per screen, strong typography, generous spacing, and limited chrome.
 - Avoid alternating dark/light on every question screen.
+- Layout is **left-aligned, editorial and restrained**, not a generic centered SaaS landing page.
+- The assessment is almost monochromatic. Meaningful semantic color appears for the first time on the result.
 
 ## Design References
 - **Revolut app** — user-selected inspiration for clean, contemporary product UI, strong hierarchy, restraint, and focus on the primary action.
 - This is a reference, not a skin to copy. RiskPoint should retain its own identity and insurance/cyber-risk context.
 
 ## Typography
-Use a single type family and create hierarchy primarily through size, weight, spacing, and layout rather than mixing multiple font families.
+Use a single type family and create hierarchy through size, weight, spacing, and contrast rather than mixing multiple font families.
 
 ### Typefaces
-- **Heading**: Sora
-- **Body**: Sora
-- **Monospace**: TBD; do not introduce one unless the interface genuinely needs it.
+- **All text**: Sora (human-approved; Sora only)
+- **Monospace**: none. Do not add a second font.
 
 ### Typography direction
 - Large, confident question headings.
 - Highly legible answer labels and supporting copy.
-- Result values such as `HIGH` and financial ranges may use significantly larger/heavier Sora styles.
-- Exact sizes, weights, line heights, and responsive type scale remain TBD pending visual exploration.
+- The risk level (`LOW` / `MID` / `HIGH`) is the largest element on the result. The financial range is clearly smaller.
+- Exact sizes, weights and line heights: first-build values in `src/styles/tokens.css` (Claude's interpretation, pending human review).
+
+## Components
+### Answer row *(human-approved direction)*
+The same selectable-row component is used for all three questions: a typographic list with a subtle row surface and a clear radio indicator.
+- The whole row is clickable; native radio semantics.
+- Selected state is obvious without relying on color alone (filled radio indicator + row outline).
+- Visible focus state.
+- Not: industry icon cards, chips, pills, emoji, per-option icons, heavy boxed cards.
+
+### Progress *(human-approved direction)*
+Three horizontal segments plus a small textual equivalent ("1 of 3"). Short and finite; no urgency.
+
+### Risk indicator *(human-approved direction)*
+Restrained three-segment LOW | MID | HIGH indicator, one coarse position per level. No gauge, speedometer, ticks or numbers. Must not reveal the hidden score.
 
 ## Color Logic
 ### Human-approved structural logic
@@ -38,27 +53,26 @@ Use a single type family and create hierarchy primarily through size, weight, sp
 The result transition should create a clear change of mode after `See my risk`, while remaining comfortable and accessible rather than using a harsh flash.
 
 ### Color Palette
-- **Assessment background:** TBD dark neutral
-- **Assessment foreground:** TBD high-contrast light neutral
-- **Result background:** white / near-white, exact value TBD
-- **Result foreground:** TBD dark neutral
-- **Accent:** TBD
-- **Risk status colors:** TBD. LOW / MID / HIGH must not rely on color alone for meaning.
+Human-approved constraints:
+- Assessment: dark neutral, high-contrast light foreground, almost monochromatic.
+- Result: light neutral background, dark foreground.
+- Risk hues are restrained, not saturated traffic-light colors. LOW / MID / HIGH must never rely on color alone.
+
+Exact values (neutrals, surfaces, risk hues): first-build values in `src/styles/tokens.css` (Claude's interpretation, pending human review).
 
 ## Spacing
-TBD after visual exploration. Direction: generous whitespace, low visual density, and enough separation that each screen feels focused on one decision.
+Direction: generous whitespace, low visual density, and enough separation that each screen feels focused on one decision. First-build values in `src/styles/tokens.css`.
 
 ## Motion
-Motion should communicate progression and state change, not add artificial waiting time.
+Motion communicates real state change, not artificial waiting time. *(Human-approved direction)*
 
-Current direction:
-- subtle transitions between assessment questions;
-- a purposeful dark → light transition after `See my risk` to mark assessment → result;
-- result content may use progressive reveal and a moving risk-scale marker if this survives visual testing;
-- no fake multi-second `Calculating…` delay;
-- reduced-motion behavior must be considered before implementation is accepted.
+- Subtle transitions between assessment questions.
+- After `See my risk`: assessment content exits → dark background transitions to light → risk result appears → supporting information follows with a restrained stagger.
+- The result is already calculated; animation is presentation only. The CTA stays usable.
+- No `Calculating…`, "Analyzing with AI…", typing dots, spinner, fake progress or count-up loss animation.
+- `prefers-reduced-motion`: no translation-heavy sequence, no indicator travel; short opacity/theme transition only.
 
-Exact easing, duration, sequencing, and result reveal remain TBD.
+Exact durations and easing: first-build values in code (pending human review).
 
 ## Tone of Voice
 Professional, concise, calm, and clear. Avoid alarmist cyber language or fear-marketing claims that the model cannot support.
@@ -71,17 +85,20 @@ Professional, concise, calm, and clear. Avoid alarmist cyber language or fear-ma
 - Maintain clear contrast and visible state changes.
 
 ### Don't
-- Do not use stereotypical hacker / Matrix / neon-cyber aesthetics by default.
+- Do not use stereotypical hacker / Matrix / neon-cyber aesthetics (neon, glowing cyan/green, hoodies, padlocks, shields as hero imagery, network particles, futuristic grids).
+- Do not use glassmorphism, gradient mesh backgrounds, dashboard chrome, gauge dials or speedometers.
+- Do not use huge icon cards, generic card stacks, badge pills for LOW / MID / HIGH, or wrap every result section in a card.
+- Do not use decorative charts, fear statistics, countdowns or urgency banners.
 - Do not alternate dark and light backgrounds merely to create stimulation.
 - Do not add decorative complexity that competes with the three-question funnel.
-- Do not introduce a second type family without a clear functional reason.
+- Do not introduce a second type family.
 - Do not use motion as a fake calculation delay.
 
 ---
 
 ## Decision Status
-**Human approved:** Sora as the single primary type family; dark Q1–Q3; light/white result; dark → light as the semantic assessment → answer transition; Revolut as a design inspiration rather than a UI to copy.
+**Human approved:** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; left-aligned editorial layout; answer-row treatment; three-segment progress; three-segment risk indicator; motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy.
 
-**Still open:** exact palette, accent color, answer-component treatment, border radius, spacing scale, type scale, detailed motion, result hierarchy details, CTA styling, responsive refinements.
+**First-build interpretation (Claude, pending human review):** exact palette values, risk hues, radius, spacing scale, type scale, motion timings, responsive proportions.
 
 **Note:** Design decisions must be grounded in research and product goals, not arbitrary preference.

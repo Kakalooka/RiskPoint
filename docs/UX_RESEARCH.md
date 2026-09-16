@@ -49,50 +49,36 @@ Current discovery focuses on:
 ### MFA
 **FINDING:** MFA is a concrete security control and provides a clearer security-posture signal than merely asking whether employees work remotely.
 
-**HUMAN DECISION:** MFA replaces remote work as the third input.
-
-Proposed selectable answers:
-- Yes, across the company
-- Only for some accounts
-- No
-- I'm not sure
+**HUMAN DECISION:** MFA replaces remote work as the third input. Answer values: see `SPEC.md` → Assessment Inputs.
 
 **HYPOTHESIS:** "I'm not sure" should not be treated as equivalent to either a confirmed Yes or a confirmed No. It can receive an intermediate prototype risk modifier.
+
+**HUMAN DECISION (scoring v0.2):** "I'm not sure" receives a modifier between "Only for some accounts" and "No", so it can never produce LOW. Weights: see `SPEC.md`.
 
 ### Annual revenue
 **FINDING:** Claims data show that financial impact varies substantially with company scale. Scale is more directly useful for potential-loss framing than for asserting cyber-incident probability.
 
-**HUMAN DECISION:** Annual revenue replaces employee count.
-
-Current candidate bands:
-- Under €5M
-- €5M–€25M
-- €25M–€50M
-- €50M–€300M
-- €300M+
+**HUMAN DECISION:** Annual revenue replaces employee count. Bands: see `SPEC.md` → Assessment Inputs.
 
 **HYPOTHESIS / CAUTION:** These bands are prototype UX segmentation. They must not be presented as an exact translation of source datasets or an insurer's underwriting bands.
 
 ### Industry
 **HYPOTHESIS:** The prototype represents a broad-market B2B insurer rather than a sector-specific insurer. This makes industry a meaningful first question.
 
-Current candidate options:
-- Technology
-- Financial services
-- Healthcare
-- Retail & e-commerce
-- Manufacturing
-- Professional services
-- Other
+**HUMAN DECISION:** Industry options: see `SPEC.md` → Assessment Inputs.
 
 **HUMAN DECISION:** `Other` must not automatically mean low risk; missing specificity is not evidence of low exposure.
+
+**PROTOTYPE HEURISTIC (scoring v0.2):** Industry baselines are simplified prototype weights. They are **not** derived from historical or actuarial industry-loss statistics, and result copy must not imply that they are.
 
 ### Risk result
 **SOURCE:** Recruitment brief explicitly requires a dynamic LOW / MID / HIGH result.
 
 **HUMAN DECISION:** Preserve **LOW / MID / HIGH** exactly as the user-facing classification.
 
-**HUMAN DECISION:** Do not expose a numeric percentage or `x/100` risk score. A hidden deterministic score may drive logic and the position of a marker on a visual scale, but the UI should not imply actuarial precision that the prototype cannot support.
+**HUMAN DECISION:** Do not expose a numeric percentage or `x/100` risk score. A hidden deterministic score may drive logic, but the UI should not imply actuarial precision that the prototype cannot support.
+
+**HUMAN DECISION (first build):** The visual indicator is a restrained three-segment LOW | MID | HIGH indicator with one coarse position per level. It must not reveal the hidden score (no nine-position marker, ticks, numbers, gauge or speedometer).
 
 ### Risk versus financial loss
 **FINDING:** Likelihood/risk profile and financial severity/exposure are related but not the same concept. Claims data also show wide variance and skew in incident costs.
@@ -103,6 +89,8 @@ Current candidate options:
 
 **HYPOTHESIS:** Revenue should influence potential loss more strongly than risk level. Industry can influence both. MFA should influence risk more strongly and may have a limited effect on potential-loss severity.
 
+**HUMAN DECISION (financial impact v0.1):** For the first build, the financial range is determined by revenue band only. MFA does not modify the range; industry does not modify it either. Whether industry or controls should adjust severity remains an open hypothesis. Ranges: see `SPEC.md`.
+
 ### Claims research and false precision
 **SOURCE:** NetDiligence cyber-claims research reviewed during discovery, including the 2026 study covering real cyber-insurance claims. The research shows substantial variation in incident costs by company size/sector and a highly skewed distribution.
 
@@ -110,23 +98,32 @@ Current candidate options:
 
 **HUMAN DECISION:** Show an **illustrative range**, not an exact expected-loss figure. Include language making clear that the output is not an insurance quote.
 
-**IMPORTANT:** Exact loss-range values and modifiers remain prototype assumptions until finalized. Production use would require validation by cyber/underwriting/actuarial experts.
+**IMPORTANT:** The v0.1 ranges are human-approved **prototype illustrative ranges**, not validated estimates. Production use would require validation by cyber/underwriting/actuarial experts.
 
 ### Calculation feedback
 **FINDING:** A fake multi-second "AI is calculating" delay would create artificial latency and falsely imply complexity.
 
-**HUMAN DECISION:** Use a short result/calculation microinteraction if it improves perceived polish, but do not intentionally delay the result.
+**HUMAN DECISION:** No "calculating" state, spinner, typing dots, fake progress or count-up animation. The result is computed immediately; motion is a presentation-only transition (assessment exits → dark to light → result appears). Details: `DESIGN.md` → Motion.
+
+### Result hierarchy and agency
+**HYPOTHESIS:** A result that moves from risk → understanding → agency → protection is more credible and less manipulative than one that moves from fear → money → buy.
+
+**HUMAN DECISION (first build):** The risk level is the hero; financial impact is clearly secondary and separate. The result includes an answer recap with Edit and an MFA counterfactual computed with the same scoring function. Hierarchy and copy rules: see `SPEC.md` → Result.
+
+### Result access and CTA
+**HUMAN DECISION (first build):** The result is visible without email capture or registration. Primary CTA "See protection options" opens a minimal prototype lead panel (no backend, no submission). The production CTA proposition and post-CTA flow remain open.
 
 ## Current UX Hypotheses Still To Validate
-- Exact industry options and their internal risk baselines
-- Exact revenue bands
-- Risk-score weights and LOW/MID/HIGH thresholds
-- Loss-range baselines and modifiers
-- Result-screen information hierarchy
-- Explanation copy and primary-driver selection
-- CTA proposition and commitment level
-- Post-CTA flow
-- Visual direction and motion language
+Items below are approved for the first build as prototype decisions, but have not been validated with users or domain experts:
+- Industry options, revenue bands, scoring v0.2 weights and thresholds (prototype heuristic, not underwriting)
+- Financial-impact v0.1 ranges and whether industry/controls should adjust severity
+- Whether the result hierarchy and MFA agency message improve understanding and CTA intent
+
+Still open:
+- Exact explanation sentence templates (first-build copy written by Claude, pending review)
+- Production CTA proposition and commitment level
+- Production post-CTA flow
+- Detailed visual values and motion timings (first-build interpretation, pending review)
 
 ## Rejected Ideas
 - **All questions on one screen** — staged flow better supports focus for this prototype.
@@ -147,4 +144,4 @@ Do not convert a research finding directly into a product fact when a human deci
 
 ---
 
-**Status:** Assessment UX and high-level result principles are approved. Scoring/loss weights, result hierarchy, CTA and visual direction remain open.
+**Status:** Assessment UX, scoring v0.2, financial-impact v0.1, result hierarchy, first-build CTA and visual direction are human-approved for the first build. Validation of these decisions, production CTA/post-CTA flow and exact explanation copy remain open.
