@@ -5,6 +5,14 @@ This file routes Claude and other AI assistants to the correct project documents
 
 ## Context Router
 
+### Original Source Material
+- **Original recruitment brief / authoritative source for assignment requirements**: Read [source/Zadanie_180hb.txt](source/Zadanie_180hb.txt)
+- **Original recruitment delivery context**: Read [source/Mail.txt](source/Mail.txt)
+
+The files in source/ are original source material. The files in docs/ contain interpreted product, UX, design, and implementation decisions developed from that source material.
+
+When a decision in docs/ differs from the original recruitment brief, do not assume it is an error. Identify the deviation explicitly and evaluate whether it is justified by the documented reasoning. Do not silently overwrite either the source requirement or the human-approved project decision.
+
 ### Task-Based Routing
 - **Understanding the product**: Read [`docs/PRODUCT.md`](docs/PRODUCT.md)
 - **UX decisions, research, user insights**: Read [`docs/UX_RESEARCH.md`](docs/UX_RESEARCH.md)
