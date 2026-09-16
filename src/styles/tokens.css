@@ -1,0 +1,72 @@
+/*
+ * RiskPoint first-build design tokens.
+ * Structural logic (dark assessment → light result, Sora only) is human-approved.
+ * The exact values below are a first implementation interpretation, pending human review.
+ */
+
+:root {
+  --font: 'Sora Variable', 'Sora', system-ui, sans-serif;
+
+  --radius: 12px;
+  --gutter: 20px;
+  --page-max: 1240px;
+
+  --ease-out: cubic-bezier(0.22, 0.8, 0.24, 1);
+  --theme-ms: 480ms;
+  --exit-ms: 220ms;
+  --reveal-ms: 560ms;
+  --reveal-start-ms: 40ms;
+  --stagger-ms: 70ms;
+}
+
+@media (min-width: 600px) {
+  :root {
+    --gutter: 40px;
+  }
+}
+
+@media (min-width: 960px) {
+  :root {
+    --gutter: 64px;
+  }
+}
+
+/* Assessment: investigation. Almost monochromatic. */
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0f1012;
+  --fg: #f3f2ef;
+  --muted: #9c9ea3;
+  --line: #25272b;
+  --line-strong: #3a3d42;
+  --row: #17181b;
+  --row-hover: #1e2023;
+  --row-selected: #24262a;
+  --radio-border: #686b71;
+  --segment-todo: #2c2e33;
+  --segment-done: #7d8086;
+  --primary-hover: #ffffff;
+  --disabled-bg: #222428;
+  --disabled-fg: #75787e;
+  --focus: #f3f2ef;
+}
+
+/* Result: answer / clarity. Semantic colour appears here for the first time. */
+[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f5f4f0;
+  --fg: #121316;
+  --muted: #5a5d63;
+  --line: #dedbd3;
+  --line-strong: #bdb9b0;
+  --row: #ebe9e3;
+  --row-hover: #e4e2db;
+  --field-bg: #ffffff;
+  --segment-inactive: #d6d2c8;
+  --primary-hover: #2b2d31;
+  --focus: #121316;
+
+  --risk-low: #2f6b55;
+  --risk-mid: #8f6210;
+  --risk-high: #a53a2c;
+}
