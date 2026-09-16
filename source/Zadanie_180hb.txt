@@ -1,0 +1,12 @@
+Format: Screencast z komentarzem (wideo nagranie ekranu, max 5 minut)
+Cel: Analiza problemu, ułożenie UX i zaprezentowanie procesu generowania (vibe coding) działającego, pięknego prototypu.
+
+Brief biznesowy:
+Dla naszego klienta B2B (ubezpieczenia dla firm) potrzebujemy interaktywnego narzędzia lead-genowego na landing page. Chcemy stworzyć "Kalkulator Ryzyka Cybernetycznego". Użytkownik ma odpowiedzieć na 3 proste pytania (np. branża, liczba pracowników, czy pracują zdalnie), a aplikacja ma dynamicznie wyliczyć poziom ryzyka (Low/Mid/High) i pokazać estymowaną kwotę potencjalnych strat oraz przycisk "Zabezpiecz się".
+
+Twoje zadanie (Co chcemy zobaczyć na wideo):
+Analiza (UX): Zanim wygenerujesz kod, powiedz w 30 sekundach, jak zaplanowałeś flow tego narzędzia, by konwertowało (jakie stany przewidziałeś).
+
+Vibe Coding (Proces): Pokaż nam na żywo pracę w narzędziu (Cursor, v0.dev, Claude). Jakich promptów używasz? Jak reagujesz, gdy AI "wypluwa" źle wyglądający layout i jak go korygujesz słowem?
+
+Efekt finalny (UI i Działanie): Pokaż działający, klikalny komponent w przeglądarce. Oczekujemy wysokiej jakości UI - nowoczesnego wyglądu (np. Tailwind, shadcn/ui), mikroanimacji przy przeliczaniu wyniku.
