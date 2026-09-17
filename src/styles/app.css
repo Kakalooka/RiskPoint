@@ -81,6 +81,83 @@ ul {
   max-width: 760px;
   margin-inline: auto;
   padding: 24px var(--gutter) 40px;
+  /* Leans away from the motif. `translate` is used rather than `transform` so it
+     composes with the entrance keyframes instead of being overridden by them. */
+  translate: var(--offset-x, 0px) var(--offset-y, 0px);
+}
+
+/* ---------- Quarter-turn motif ---------- */
+
+/*
+ * The same oversized disc on every screen, centred on a viewport corner so only a
+ * quarter of it shows and its straight edges are the edges of the screen.
+ * `data-phase` on the screen turns it one corner clockwise per step — Q1 bottom-left
+ * → Q2 top-left → Q3 top-right → result bottom-right — grows it, and sets its fill:
+ * tonal through the assessment, the risk hue on the result. The circuit closes
+ * diagonally opposite where it started.
+ */
+.plane {
+  --plane-out: calc(var(--plane-r) * -1);
+  position: fixed;
+  z-index: -1;
+  width: calc(var(--plane-r) * 2);
+  height: calc(var(--plane-r) * 2);
+  border-radius: 50%;
+  background: var(--plane-fill);
+  pointer-events: none;
+  animation: fade 640ms var(--ease-out) both;
+}
+
+/* Q1 — bottom-left. Almost subliminal. */
+[data-phase='0'] {
+  --plane-r: max(44vmin, 26vh);
+  --plane-fill: var(--plane-tone-1);
+  --offset-x: var(--offset);
+  --offset-y: calc(var(--offset) * -1);
+}
+
+[data-phase='0'] .plane {
+  left: var(--plane-out);
+  bottom: var(--plane-out);
+}
+
+/* Q2 — top-left. */
+[data-phase='1'] {
+  --plane-r: max(52vmin, 31vh);
+  --plane-fill: var(--plane-tone-2);
+  --offset-x: var(--offset);
+  --offset-y: var(--offset);
+}
+
+[data-phase='1'] .plane {
+  left: var(--plane-out);
+  top: var(--plane-out);
+}
+
+/* Q3 — top-right. Present enough to crop into the composition. */
+[data-phase='2'] {
+  --plane-r: max(62vmin, 37vh);
+  --plane-fill: var(--plane-tone-3);
+  --offset-x: calc(var(--offset) * -1);
+  --offset-y: var(--offset);
+}
+
+[data-phase='2'] .plane {
+  right: var(--plane-out);
+  top: var(--plane-out);
+}
+
+/* Result — bottom-right, largest, and the first time the form carries colour. */
+[data-phase='3'] {
+  --plane-r: max(66vmin, 40vh);
+  --plane-fill: color-mix(in oklab, var(--risk-color) var(--plane-tint), var(--bg));
+  --offset-x: calc(var(--offset) * -1);
+  --offset-y: calc(var(--offset) * -1);
+}
+
+[data-phase='3'] .plane {
+  right: var(--plane-out);
+  bottom: var(--plane-out);
 }
 
 /* ---------- Buttons ---------- */
@@ -249,7 +326,9 @@ ul {
   max-height: min(52vh, 420px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: var(--bg);
+  /* No background: an opaque box would cut its own rectangle out of the motif
+     behind it. Nothing needs masking — the trigger is hidden while the list is open
+     and the forward action is faded out. */
   animation: reveal-list 220ms var(--ease-out) both;
 }
 
@@ -291,6 +370,15 @@ ul {
   align-items: center;
   gap: 10px;
   padding: 18px var(--gutter) calc(22px + env(safe-area-inset-bottom));
+  transition: opacity 160ms ease;
+}
+
+/* The open list owns the screen: the forward action above and the footer below both
+   recede, so a long list can scroll without colliding with the progress row. The
+   list itself stays transparent, which keeps the motif behind it whole. */
+.assessment:has(.selector[data-open='true']) .assessment__footer {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .assessment__back {
@@ -559,6 +647,7 @@ ul {
   .assessment .stage,
   .reveal,
   .risk-accent.reveal,
+  .plane,
   .selector__list {
     animation: fade 200ms ease both;
     animation-delay: 0ms;
@@ -574,7 +663,8 @@ ul {
   .selector__chevron,
   .selector__option,
   .progress__segment,
-  .stage__action {
+  .stage__action,
+  .assessment__footer {
     transition: none;
   }
 }

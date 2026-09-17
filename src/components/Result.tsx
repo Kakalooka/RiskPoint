@@ -3,6 +3,7 @@ import { lossRangeParts } from '../content';
 import { MODEL_VERSION, LOSS_MODEL_VERSION, type Answers } from '../model/config';
 import { evaluate } from '../model';
 import { LeadPanel } from './LeadPanel';
+import { Plane } from './Plane';
 
 /** Stagger position for the result reveal (presentation only). */
 const order = (i: number) => ({ '--i': i }) as CSSProperties;
@@ -24,7 +25,10 @@ export function Result({ answers, onEdit }: ResultProps) {
   }, []);
 
   return (
-    <main className="result" data-level={result.level}>
+    // data-phase 3 closes the motif's circuit: the last corner, in the risk hue.
+    <main className="result" data-level={result.level} data-phase="3">
+      <Plane />
+
       <div className="stage">
         <h1 id="risk-title" className="eyebrow reveal" style={order(0)} ref={titleRef} tabIndex={-1}>
           Your cyber risk

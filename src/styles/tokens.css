@@ -9,6 +9,9 @@
 
   --gutter: 20px;
 
+  /* Content leans away from the motif. No room for it on small screens. */
+  --offset: 0px;
+
   --ease-out: cubic-bezier(0.22, 0.8, 0.24, 1);
   --theme-ms: 480ms;
   --exit-ms: 220ms;
@@ -20,6 +23,7 @@
 @media (min-width: 600px) {
   :root {
     --gutter: 40px;
+    --offset: clamp(10px, 1.6vw, 22px);
   }
 }
 
@@ -44,6 +48,11 @@
   --primary-hover: #ffffff;
   --disabled-fg: #75787e;
   --focus: #f3f2ef;
+
+  /* The motif stays tonal here: three small steps above the ground, no colour. */
+  --plane-tone-1: #151619;
+  --plane-tone-2: #1a1b1f;
+  --plane-tone-3: #1f2024;
 }
 
 /* Result: answer / clarity. Semantic colour appears here for the first time. */
@@ -65,4 +74,10 @@
   --risk-low: #2f6b55;
   --risk-mid: #b3650a;
   --risk-high: #a53a2c;
+
+  /* The motif resolves into the risk hue as a tint. The level word keeps full
+     strength, so colour arrives without the plane competing with the hero.
+     Capped: measured so even the faintest 12px text clears 4.5:1 on the plane,
+     for every risk hue. Raising it breaks that. */
+  --plane-tint: 9%;
 }

@@ -1,6 +1,7 @@
 import { useEffect, useRef, type FormEvent } from 'react';
 import { QUESTIONS } from '../content';
 import type { Answers } from '../model/config';
+import { Plane } from './Plane';
 import { Progress } from './Progress';
 import { Selector } from './Selector';
 
@@ -33,7 +34,19 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
 
   return (
     // data-theme pins the dark tokens while the page behind transitions to light on exit.
-    <form className="assessment" data-theme="dark" data-leaving={leaving} onSubmit={handleSubmit} noValidate>
+    // data-phase drives the composition: the motif's corner and size, and the content offset.
+    <form
+      className="assessment"
+      data-theme="dark"
+      data-phase={step}
+      data-leaving={leaving}
+      onSubmit={handleSubmit}
+      noValidate
+    >
+      {/* Keyed so the motif fades in again as it turns to the next corner. The key is
+          namespaced because the stage below is keyed on the same step. */}
+      <Plane key={`motif-${step}`} />
+
       <div className="stage" key={step}>
         <h1
           id="question-title"
