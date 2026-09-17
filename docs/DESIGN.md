@@ -47,6 +47,48 @@ Three small horizontal segments plus a textual equivalent ("1 of 3"), centered a
 ### Risk level *(human-approved direction, simplification pass)*
 The result shows only the user's own level as the hero, with a minimal accent rule in the level's colour. No scale, no three-segment indicator, no gauge, speedometer, ticks or numbers, and nothing that reveals the hidden score.
 
+## Composition — the quarter-turn motif *(human-approved direction, visual exploration v01)*
+The interface is ultra-minimal but no longer floats in undifferentiated space. One geometric form
+gives the flow a composition: an oversized disc whose centre sits on a viewport corner, so exactly
+a quarter of it is visible and its two straight edges are the edges of the screen.
+
+It is always the same form. It takes one clockwise quarter turn per screen, and it grows and gains
+tone as the assessment proceeds:
+
+| Screen | Corner | Radius | Fill | Content offset |
+|---|---|---|---|---|
+| Q1 Industry | bottom-left | `max(44vmin, 26vh)` | tone 1 — almost subliminal | right / up |
+| Q2 Revenue | top-left | `max(52vmin, 31vh)` | tone 2 | right / down |
+| Q3 MFA | top-right | `max(62vmin, 37vh)` | tone 3 — crops into the composition | left / down |
+| Result | bottom-right | `max(66vmin, 40vh)` | risk hue as a tint | left / up |
+
+Three properties make this a system rather than an ornament:
+- **Rotation** — strictly clockwise, one corner per step, closing the circuit diagonally opposite
+  where it started.
+- **Build** — tonal only on the dark screens, so tension grows through the assessment without
+  introducing colour before the result.
+- **Resolution** — the form takes the risk hue on the result. Colour therefore arrives as the
+  payoff of a system rather than as decoration on each screen.
+
+Rules:
+- Exactly one form per screen. No second shape, no gradient, no texture, no image asset.
+- The form never moves between corners; the turn is read across screens, not animated. Its only
+  motion is the shared opacity fade, which `prefers-reduced-motion` already shortens.
+- It is presentation only: behind all content, never interactive, hidden from assistive tech.
+- Corners are chosen so the coloured result plane never sits under the brand mark and no plane
+  sits under `Back`.
+- Content leans away from the current corner by a small offset (`--offset`), which is zeroed below
+  600px where there is no room for it. This is a slight offset from the optical centre, not a
+  change to the centred layout.
+
+### Consequences accepted with the motif
+- The expanded selector list carries **no background**. An opaque box cut its own rectangle out of
+  the form behind it. Nothing needed masking: the trigger is hidden while the list is open.
+- While the list is open the **footer recedes** (progress and `Back` fade out), exactly as the
+  forward action already does, so a long list can scroll without colliding with the progress row.
+- The result tint is **capped at 9%** of the risk hue: measured so even the faintest 12px text
+  clears 4.5:1 anywhere on the plane, for every risk hue.
+
 ## Color Logic
 ### Human-approved structural logic
 - **Question 1:** dark
@@ -101,8 +143,10 @@ Professional, concise, calm, and clear. Avoid alarmist cyber language or fear-ma
 ---
 
 ## Decision Status
-**Human approved:** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; left-aligned editorial layout; answer-row treatment; three-segment progress; three-segment risk indicator; motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy.
+**Human approved:** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; centered editorial layout; the typographic selector; three-segment progress; the result showing only the user's own level; motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy; the quarter-turn motif as the composition system, with content allowed a slight offset from the exact optical centre.
 
-**First-build interpretation (Claude, pending human review):** exact palette values, risk hues, radius, spacing scale, type scale, motion timings, responsive proportions.
+*(Superseded by the simplification pass: the left-aligned two-column layout, the answer-row treatment and the three-segment risk indicator.)*
+
+**First-build interpretation (Claude, pending human review):** exact palette values, risk hues, radius, spacing scale, type scale, motion timings, responsive proportions, and the motif's exact radii, tone steps, tint percentage and offset magnitude.
 
 **Note:** Design decisions must be grounded in research and product goals, not arbitrary preference.
