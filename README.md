@@ -12,8 +12,25 @@ Requires Node.js 20+.
 npm install
 npm run dev       # http://localhost:5173
 npm test          # model tests (all 140 answer combinations + golden set)
-npm run build     # typecheck + production build
+npm run build     # typecheck + production build → dist/
+npm run build:all # production build + standalone file → dist/ and dist/RiskPoint.html
 ```
+
+## Final output
+
+| Output | Path | How to open |
+|---|---|---|
+| Production build | `dist/` (`index.html` + `assets/`) | serve the folder, e.g. `npm run preview` |
+| Standalone prototype | **`dist/RiskPoint.html`** | double-click it, or open the file directly in a browser — no server needed |
+
+`dist/RiskPoint.html` is the same application in a single file: JavaScript, CSS and both Sora
+font files are inlined, it makes no network requests, and it stays fully interactive
+(all three questions, keyboard-operable selectors, scoring, result, dark → light transition,
+reduced motion, the protection form and mobile layout).
+
+Build it with `npm run build:all`, or with `npm run build:standalone` after a normal build.
+`vite.standalone.config.ts` builds it via `vite-plugin-singlefile` into a temporary folder and
+copies the result to `dist/RiskPoint.html`, leaving the normal `dist/index.html` untouched.
 
 Stack: Vite, React, TypeScript, plain CSS, Vitest. No backend, no runtime LLM, no analytics.
 
