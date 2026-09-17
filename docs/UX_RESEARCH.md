@@ -110,6 +110,13 @@ Current discovery focuses on:
 
 **HUMAN DECISION (first build):** The risk level is the hero; financial impact is clearly secondary and separate. The result includes an answer recap with Edit and an MFA counterfactual computed with the same scoring function. Hierarchy and copy rules: see `SPEC.md` → Result.
 
+### Simplification pass
+**FINDING (human review of the first build):** The first build was technically sound but visually text-heavy and close to a generic SaaS form. Showing all options before interaction, plus explanation, recap, agency and methodology blocks, made each screen dense.
+
+**HUMAN DECISION:** Simplify aggressively. One centered question and one typographic selector per screen, with options revealed only on interaction; a result that shows only the user's own level, the financial range and the CTA. Methodology and the MFA counterfactual move behind a subtle "How is this calculated?" disclosure. Scoring, thresholds, ranges, the three-step flow, the dark → light transition, reduced-motion behavior and CTA behavior are unchanged.
+
+**OPEN:** Whether removing the visible explanation, recap and agency message weakens credibility or the "risk → understanding → agency → protection" intent. Worth testing against the denser first build.
+
 ### Result access and CTA
 **HUMAN DECISION (first build):** The result is visible without email capture or registration. Primary CTA "See protection options" opens a minimal prototype lead panel (no backend, no submission). The production CTA proposition and post-CTA flow remain open.
 

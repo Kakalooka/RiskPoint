@@ -33,9 +33,10 @@ Question: "What's your industry?"
 - Professional services
 - Other
 
+Each question is presented as one centered question plus one typographic selector that reveals its options in place. Helper lines below the questions were removed in the simplification pass; the question copy itself is unchanged.
+
 ### Q2 — Annual revenue
 Question: "What's your annual revenue?"
-Helper: "An approximate range is fine."
 - Under €5M
 - €5M–€25M
 - €25M–€50M
@@ -44,20 +45,18 @@ Helper: "An approximate range is fine."
 
 ### Q3 — MFA coverage
 Question: "How widely is multi-factor authentication (MFA) used across your company?"
-Helper: "Think email, remote access and admin accounts."
 - Yes, across the company
 - Only for some accounts
 - No
 - I'm not sure
 
 ## States
-Required states:
-- Question 1 / no selection
-- Question 1 / selected
-- Question 2 / no selection
-- Question 2 / selected
-- Question 3 / no selection
-- Question 3 / selected
+Required states, for each of the three questions:
+- Selector closed, nothing chosen (options are not visible before interaction)
+- Selector expanded (options revealed in place; the forward action is hidden while open)
+- Selector closed, showing the chosen answer
+
+Plus:
 - Result transition (presentation only; no "calculating" state, the result is already computed)
 - Result LOW
 - Result MID
@@ -88,7 +87,7 @@ Model configuration lives in one typed configuration file, separate from UI code
 ### User-facing precision
 - Do not display the numeric score, `x/100`, a percentage probability, a percentile or another pseudo-precise score.
 - The user-facing classification is exactly **LOW / MID / HIGH**.
-- The visual indicator shows one coarse position per level and must not reveal the hidden 2–7 score.
+- Show only the user's own level. Do not show the other levels, a full scale or a three-segment indicator. A minimal accent rule in the level's colour replaces the earlier indicator.
 
 ### Scoring model v0.2 — HUMAN-APPROVED PROTOTYPE HEURISTIC
 Not underwriting, not a probability model, not derived from actuarial loss statistics.
@@ -147,20 +146,19 @@ Disclaimer: "Illustrative estimate, not an insurance quote."
 These ranges are not underwriting outputs or actuarial estimates. Whether industry or controls should adjust severity in a later version remains an open hypothesis (see `UX_RESEARCH.md`).
 
 ## Result
-Hierarchy *(human decision)*:
+Hierarchy *(human decision, simplified)*. The result is one centered column:
 1. "Your cyber risk"
-2. LOW / MID / HIGH as the visual hero
-3. Three-segment risk indicator (LOW | MID | HIGH; no ticks, numbers, gauge or speedometer)
-4. One-sentence explanation
-5. Answer recap + **Edit**
-6. "Potential financial impact"
-7. Illustrative € range
-8. Scope + disclaimer
-9. Agency (MFA counterfactual)
-10. One primary CTA: "See protection options"
-11. Collapsed "How this is estimated" disclosure
+2. The user's own level — LOW, MID or HIGH — as the visual hero
+3. A minimal accent rule in the level's colour
+4. "Potential financial impact"
+5. Illustrative € range
+6. "Illustrative estimate."
+7. One primary CTA: "See protection options"
+8. Two subtle links: "How is this calculated?" and "Edit answers"
 
 The € range must not be visually larger than the risk level.
+
+Not shown in the main result view: the answer recap, the explanation sentence, the MFA counterfactual, the methodology text and long disclaimers. The explanation logic and the counterfactual remain part of the model; the counterfactual and a short method summary appear inside the "How is this calculated?" disclosure.
 
 ### Explanation Logic
 - Deterministic copy; no runtime LLM.
@@ -175,8 +173,8 @@ Computed with the **same** scoring function: current answers vs. the same answer
 - Full MFA already selected: "Full MFA coverage is already helping keep your assessed risk lower."
 - Never claim a level change the model did not calculate.
 
-### Answer recap
-Compact recap, e.g. "Healthcare · €5M–€25M · MFA for some accounts", with **Edit**. Edit returns to the assessment with answers preserved. No router required.
+### Editing answers
+A subtle **Edit answers** link returns to the assessment with answers preserved. No router required. The earlier inline answer recap was removed in the simplification pass.
 
 ### CTA — first build
 - "See protection options" opens a simple inline lead panel. It does not gate the result.
@@ -213,7 +211,7 @@ Minimum requirement: the complete assessment and result must remain usable on co
 
 ## Accessibility
 Target sensible **WCAG 2.2 AA** behavior for the prototype:
-- native radio inputs grouped and labelled per question;
+- the selector implements the listbox pattern: it opens with Enter, Space or the arrow keys, moves with arrows, Home and End, selects with Enter or Space, closes with Escape, supports character typeahead, and returns focus to the selector when it closes;
 - keyboard operability;
 - visible focus state;
 - sufficient contrast;

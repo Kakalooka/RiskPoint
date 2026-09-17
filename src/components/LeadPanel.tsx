@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 
 /** Prototype-only lead capture. No network request is made. */
-export function LeadPanel({ recapText }: { recapText: string }) {
+export function LeadPanel() {
   const [sent, setSent] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
   const firstFieldRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
-    firstFieldRef.current?.focus();
+    // Keep the whole form visible on short screens instead of only the focused field.
+    formRef.current?.scrollIntoView({ block: 'nearest' });
+    firstFieldRef.current?.focus({ preventScroll: true });
   }, []);
 
   useEffect(() => {
@@ -21,22 +24,14 @@ export function LeadPanel({ recapText }: { recapText: string }) {
 
   if (sent) {
     return (
-      <div className="lead lead--sent" id="lead-panel">
-        <p className="lead__status" role="status" tabIndex={-1} ref={statusRef}>
-          Prototype only — nothing was submitted.
-        </p>
-        <p className="lead__text">
-          In this prototype, your details were not stored or sent anywhere.
-        </p>
-      </div>
+      <p className="lead__status" id="lead-panel" role="status" tabIndex={-1} ref={statusRef}>
+        Prototype — nothing was submitted.
+      </p>
     );
   }
 
   return (
-    <form className="lead" id="lead-panel" onSubmit={handleSubmit}>
-      <p className="lead__text">
-        Your answers are already included: <span className="lead__recap">{recapText}</span>
-      </p>
+    <form className="lead" id="lead-panel" ref={formRef} onSubmit={handleSubmit}>
       <div className="field">
         <label className="field__label" htmlFor="lead-email">
           Work email
@@ -64,10 +59,10 @@ export function LeadPanel({ recapText }: { recapText: string }) {
           required
         />
       </div>
-      <button type="submit" className="button button--secondary">
-        Request protection options
+      <button type="submit" className="button button--quiet">
+        Send
       </button>
-      <p className="lead__note">Prototype: nothing is sent when you submit this form.</p>
+      <p className="lead__note">Prototype: nothing is sent.</p>
     </form>
   );
 }

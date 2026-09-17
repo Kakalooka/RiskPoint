@@ -9,8 +9,11 @@ RiskPoint should feel like a contemporary premium product interface rather than 
 - The dark → light transition is semantic: **assessment / investigation → answer / clarity**. It happens once and should not be treated as arbitrary decoration.
 - Keep the interface visually restrained: one dominant task per screen, strong typography, generous spacing, and limited chrome.
 - Avoid alternating dark/light on every question screen.
-- Layout is **left-aligned, editorial and restrained**, not a generic centered SaaS landing page.
-- The assessment is almost monochromatic. Meaningful semantic color appears for the first time on the result.
+- Layout is **centered, editorial and restrained**, with large negative space and very little chrome. Screens should feel almost empty and confident enough to leave large areas blank.
+- The assessment is almost monochromatic. Meaningful semantic color appears for the first time on the result, mainly in the risk level itself.
+- Solve uncertainty through hierarchy, spacing and interaction rather than explanatory copy. Do not add copy to fill space.
+
+*(The first build used a left-aligned two-column layout with answer rows. The simplification pass replaced it with the centered single-column composition described here.)*
 
 ## Design References
 - **Revolut app** — user-selected inspiration for clean, contemporary product UI, strong hierarchy, restraint, and focus on the primary action.
@@ -30,18 +33,19 @@ Use a single type family and create hierarchy through size, weight, spacing, and
 - Exact sizes, weights and line heights: first-build values in `src/styles/tokens.css` (Claude's interpretation, pending human review).
 
 ## Components
-### Answer row *(human-approved direction)*
-The same selectable-row component is used for all three questions: a typographic list with a subtle row surface and a clear radio indicator.
-- The whole row is clickable; native radio semantics.
-- Selected state is obvious without relying on color alone (filled radio indicator + row outline).
-- Visible focus state.
-- Not: industry icon cards, chips, pills, emoji, per-option icons, heavy boxed cards.
+### Selector *(human-approved direction, simplification pass)*
+The same component is used for all three questions: one centered line of text that opens its options in place.
+- Closed: the placeholder ("Choose industry") or the chosen answer, with a chevron and a thin underline. It reads as interactive without looking like a form control.
+- Options are not visible before interaction.
+- Expanded: a minimal typographic list, unselected options dimmed, the active one at full contrast. The forward action is hidden while the list is open, and the list is positioned so the question does not move.
+- Selected is marked by weight and a small rule, not colour alone. Visible focus state.
+- Not: radio buttons, cards, chips, pills, bordered rows, native select styling, icons or two-column layouts.
 
 ### Progress *(human-approved direction)*
-Three horizontal segments plus a small textual equivalent ("1 of 3"). Short and finite; no urgency.
+Three small horizontal segments plus a textual equivalent ("1 of 3"), centered at the bottom. Short and finite; no urgency.
 
-### Risk indicator *(human-approved direction)*
-Restrained three-segment LOW | MID | HIGH indicator, one coarse position per level. No gauge, speedometer, ticks or numbers. Must not reveal the hidden score.
+### Risk level *(human-approved direction, simplification pass)*
+The result shows only the user's own level as the hero, with a minimal accent rule in the level's colour. No scale, no three-segment indicator, no gauge, speedometer, ticks or numbers, and nothing that reveals the hidden score.
 
 ## Color Logic
 ### Human-approved structural logic

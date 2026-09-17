@@ -1,15 +1,13 @@
 /*
- * RiskPoint first-build design tokens.
+ * RiskPoint design tokens.
  * Structural logic (dark assessment → light result, Sora only) is human-approved.
- * The exact values below are a first implementation interpretation, pending human review.
+ * The exact values below are an implementation interpretation, pending human review.
  */
 
 :root {
   --font: 'Sora Variable', 'Sora', system-ui, sans-serif;
 
-  --radius: 12px;
   --gutter: 20px;
-  --page-max: 1240px;
 
   --ease-out: cubic-bezier(0.22, 0.8, 0.24, 1);
   --theme-ms: 480ms;
@@ -37,16 +35,13 @@
   --bg: #0f1012;
   --fg: #f3f2ef;
   --muted: #9c9ea3;
-  --line: #25272b;
-  --line-strong: #3a3d42;
+  --faint: #8a8d93;
+  --option-idle: #8e9196;
+  --line-strong: #43464c;
   --row: #17181b;
-  --row-hover: #1e2023;
-  --row-selected: #24262a;
-  --radio-border: #686b71;
   --segment-todo: #2c2e33;
   --segment-done: #7d8086;
   --primary-hover: #ffffff;
-  --disabled-bg: #222428;
   --disabled-fg: #75787e;
   --focus: #f3f2ef;
 }
@@ -57,13 +52,14 @@
   --bg: #f5f4f0;
   --fg: #121316;
   --muted: #5a5d63;
-  --line: #dedbd3;
-  --line-strong: #bdb9b0;
+  --faint: #64676d;
+  --option-idle: #6b6e74;
+  --line-strong: #b4b0a7;
   --row: #ebe9e3;
-  --row-hover: #e4e2db;
-  --field-bg: #ffffff;
-  --segment-inactive: #d6d2c8;
+  --segment-todo: #d6d2c8;
+  --segment-done: #9a968d;
   --primary-hover: #2b2d31;
+  --disabled-fg: #8a8d93;
   --focus: #121316;
 
   --risk-low: #2f6b55;
