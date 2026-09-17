@@ -52,31 +52,30 @@ The interface is ultra-minimal but no longer floats in undifferentiated space. O
 gives the flow a composition: an oversized disc whose centre sits on a viewport corner, so exactly
 a quarter of it is visible and its two straight edges are the edges of the screen.
 
-**Through the assessment the form stays in one zone** — the top-right corner, the only area no
-content occupies. Q1 to Q3 vary it by scale, a few vmin of crop and one tonal step, and nothing
-else: same corner, same content position, same shape. The composition is never restated, so the
-question and the selector stay dominant and the flow reads as one idea gaining presence rather
-than a new composition per step.
+**Every question screen holds the same corner — bottom-left — and the same content position.** The
+only progression across Q1, Q2 and Q3 is a small step of scale, with a matching step of tone. No
+question screen restates the composition, so the question and the selector stay dominant and the
+flow reads as one idea gaining presence rather than a new composition per step.
 
-**The result makes the flow's only move.** The plane settles down the right edge to the
-bottom-right and takes the risk hue. That single change is what marks the assessment resolving
-into an answer.
+**The result resolves the system.** The plane takes the last step of the same scale sequence, sits
+in the bottom-right, and carries the risk hue. That is the only change of position in the flow, and
+the hue is the event rather than the scale.
 
-| Screen | Corner | Radius | Crop shift | Fill | Content offset |
-|---|---|---|---|---|---|
-| Q1 Industry | top-right | `max(52vmin, 26vh)` | 0 | tone 1 | left / down |
-| Q2 Revenue | top-right | `max(58vmin, 29vh)` | 3vmin | tone 2 | left / down |
-| Q3 MFA | top-right | `max(64vmin, 32vh)` | 6vmin | tone 3 | left / down |
-| Result | bottom-right | `max(66vmin, 40vh)` | — | risk hue as a tint | left / up |
+| Screen | Corner | Radius | Fill | Content offset |
+|---|---|---|---|---|
+| Q1 Industry | bottom-left | `max(52vmin, 26vh)` | tone 1 | right / up |
+| Q2 Revenue | bottom-left | `max(58vmin, 29vh)` | tone 2 | right / up |
+| Q3 MFA | bottom-left | `max(64vmin, 32vh)` | tone 3 | right / up |
+| Result | bottom-right | `max(70vmin, 40vh)` | risk hue as a tint | left / up |
 
-`--plane-shift` lowers the centre off the corner, so the crop opens slightly as the form grows
-instead of reading as a plain zoom. The result is only marginally larger than Q3: the colour is
-the event, not the scale.
+The radii form one even sequence — 52 / 58 / 64 / 70vmin — so the growth is regular and never
+jumps. The `vh` floor keeps the form present on tall narrow screens; the result's floor is the one
+the approved result screen was reviewed with.
 
 Rules:
 - Exactly one form, one corner per mode. No second shape, no gradient, no texture, no image asset.
-- No large positional change between question screens, and no per-screen decoration. Variation is
-  limited to scale, crop, tonal step.
+- No positional change between question screens. Variation is limited to scale and one tonal step
+  — no per-screen crop, rotation or decoration.
 - Tonal only on the dark screens, so presence builds without introducing colour before the result.
 - The form never animates between positions; the change is read across screens, not performed. Its
   only motion is the shared opacity fade, which `prefers-reduced-motion` already shortens.
@@ -84,6 +83,8 @@ Rules:
 - Content leans away from the form by a small offset (`--offset`), identical across all three
   questions and zeroed below 600px. This is a slight offset from the optical centre, not a change
   to the centred layout.
+- `Back` and the progress row sit over the plane on the question screens. Both are measured: the
+  muted text keeps 6.07:1 on the largest, brightest tone.
 
 ### Consequences accepted with the plane
 - The expanded selector list carries **no background**. An opaque box cut its own rectangle out of
@@ -147,10 +148,10 @@ Professional, concise, calm, and clear. Avoid alarmist cyber language or fear-ma
 ---
 
 ## Decision Status
-**Human approved:** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; centered editorial layout; the typographic selector; three-segment progress; the result showing only the user's own level; motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy; the curved plane as the composition system — one zone through the assessment, varying only by scale, crop and tone, with the single move and the colour arrival on the result — and content allowed a slight offset from the exact optical centre.
+**Human approved:** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; centered editorial layout; the typographic selector; three-segment progress; the result showing only the user's own level; motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy; the curved plane as the composition system — bottom-left on all three question screens, varying only by a small step of scale and tone, resolving one step larger in the bottom-right on the result where it takes the risk hue — and content allowed a slight offset from the exact optical centre.
 
 *(Superseded by the simplification pass: the left-aligned two-column layout, the answer-row treatment and the three-segment risk indicator.)*
 
-**First-build interpretation (Claude, pending human review):** exact palette values, risk hues, radius, spacing scale, type scale, motion timings, responsive proportions, and the plane's exact radii, crop shifts, tone steps, tint percentage and offset magnitude.
+**First-build interpretation (Claude, pending human review):** exact palette values, risk hues, radius, spacing scale, type scale, motion timings, responsive proportions, and the plane's exact radii, tone steps, tint percentage and offset magnitude.
 
 **Note:** Design decisions must be grounded in research and product goals, not arbitrary preference.

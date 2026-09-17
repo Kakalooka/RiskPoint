@@ -4,11 +4,12 @@
  * One oversized disc whose centre sits on a viewport corner, so a quarter of it is
  * visible and its two straight edges are the edges of the screen.
  *
- * It holds the same corner for all three questions and varies only by scale, a few
- * vmin of crop and one tonal step, so no question screen restates the composition.
- * The result makes the flow's only move: down the right edge, in the risk hue.
+ * It holds the same corner — bottom-left — for all three questions and varies only by
+ * one small step of scale and tone, so no question screen restates the composition.
+ * The result resolves the sequence one step larger, in the bottom-right, carrying the
+ * risk hue. That is the only change of position in the flow.
  *
- * Corner, size, crop and fill come from `data-phase` on the surrounding screen, so
+ * Corner, size and fill come from `data-phase` on the surrounding screen, so
  * the composition is a function of the step rather than of this element.
  * Presentation only: it sits behind all content and is never interactive.
  */
