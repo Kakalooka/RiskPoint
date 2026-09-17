@@ -63,14 +63,20 @@ the hue is the event rather than the scale.
 
 | Screen | Corner | Radius | Fill | Content offset |
 |---|---|---|---|---|
-| Q1 Industry | bottom-left | `max(52vmin, 26vh)` | tone 1 | right / up |
-| Q2 Revenue | bottom-left | `max(58vmin, 29vh)` | tone 2 | right / up |
-| Q3 MFA | bottom-left | `max(64vmin, 32vh)` | tone 3 | right / up |
-| Result | bottom-right | `max(70vmin, 40vh)` | risk hue as a tint | left / up |
+| Q1 Industry | bottom-left | `max(44vmin, 22vh)` | tone 1 | right / up |
+| Q2 Revenue | bottom-left | `max(49vmin, 25vh)` | tone 2 | right / up |
+| Q3 MFA | bottom-left | `max(54vmin, 27vh)` | tone 3 | right / up |
+| Result | bottom-right | `max(66vmin, 40vh)` | risk hue as a tint | left / up |
 
-The radii form one even sequence — 52 / 58 / 64 / 70vmin — so the growth is regular and never
-jumps. The `vh` floor keeps the form present on tall narrow screens; the result's floor is the one
-the approved result screen was reviewed with.
+The question radii are sized by **clearance from the content**, not by a formula: the form reads as
+atmosphere in the corner and never competes with the question. Measured at 1440×900, the gap from
+the plane's edge to the nearest content element is 322px on Q1, 236px on Q2 and 197px on Q3 — a
+gentle closing-in, with Q3 the closest approach and no intrusion at any step. At 375×812 the
+closest element is 326px away on Q1 and 69px on Q3, again with no overlap.
+
+The result's radius is larger by design and is the size the approved result screen was reviewed
+with: a 9% tint on the light ground reads far softer than a dark tonal plane of the same size, so
+the form stays a background accent while the level word carries the screen.
 
 Rules:
 - Exactly one form, one corner per mode. No second shape, no gradient, no texture, no image asset.
@@ -83,8 +89,9 @@ Rules:
 - Content leans away from the form by a small offset (`--offset`), identical across all three
   questions and zeroed below 600px. This is a slight offset from the optical centre, not a change
   to the centred layout.
-- `Back` and the progress row sit over the plane on the question screens. Both are measured: the
-  muted text keeps 6.07:1 on the largest, brightest tone.
+- The reading area is never intruded on. Only the footer sits over the plane — `Back` on every
+  question screen, and the progress row on narrow screens — and both are measured: the muted text
+  keeps 6.07:1 on the largest, brightest tone.
 
 ### Consequences accepted with the plane
 - The expanded selector list carries **no background**. An opaque box cut its own rectangle out of
@@ -148,7 +155,7 @@ Professional, concise, calm, and clear. Avoid alarmist cyber language or fear-ma
 ---
 
 ## Decision Status
-**Human approved:** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; centered editorial layout; the typographic selector; three-segment progress; the result showing only the user's own level; motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy; the curved plane as the composition system — bottom-left on all three question screens, varying only by a small step of scale and tone, resolving one step larger in the bottom-right on the result where it takes the risk hue — and content allowed a slight offset from the exact optical centre.
+**Human approved:** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; centered editorial layout; the typographic selector; three-segment progress; the result showing only the user's own level; motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy; the curved plane as the composition system — bottom-left on all three question screens, clear of the content and varying only by a small step of scale and tone, resolving in the bottom-right on the result where it takes the risk hue — and content allowed a slight offset from the exact optical centre.
 
 *(Superseded by the simplification pass: the left-aligned two-column layout, the answer-row treatment and the three-segment risk indicator.)*
 

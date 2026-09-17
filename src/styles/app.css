@@ -94,8 +94,9 @@ ul {
  *
  * Every question screen holds the same corner — bottom-left — and the same content
  * position. The only progression is scale: one small step per screen, with a matching
- * step of tone. The composition is never restated, so the question and the selector
- * stay dominant and the flow reads as one idea gaining presence.
+ * step of tone. The radii are kept well inside the content block, so the form reads as
+ * atmosphere in the corner rather than an object competing with the question; Q3 is the
+ * closest approach and still clears the interaction by a wide margin.
  *
  * The result resolves the system: one step larger again, on the other side of the
  * bottom edge, carrying the risk hue. It is the only change of position in the flow.
@@ -128,28 +129,29 @@ ul {
   --offset-y: calc(var(--offset) * -1);
 }
 
-/* Q1 — smallest, quietest tone. */
+/* Q1 — smallest, quietest tone. Clear of the content block. */
 [data-phase='0'] {
-  --plane-r: max(52vmin, 26vh);
+  --plane-r: max(44vmin, 22vh);
   --plane-fill: var(--plane-tone-1);
 }
 
-/* Q2 — one step of scale and tone. */
+/* Q2 — one step of scale and tone, still clear of the content block. */
 [data-phase='1'] {
-  --plane-r: max(58vmin, 29vh);
+  --plane-r: max(49vmin, 25vh);
   --plane-fill: var(--plane-tone-2);
 }
 
-/* Q3 — one step again: present, still the same composition. */
+/* Q3 — one step again: it comes a little closer to the content, and no further. */
 [data-phase='2'] {
-  --plane-r: max(64vmin, 32vh);
+  --plane-r: max(54vmin, 27vh);
   --plane-fill: var(--plane-tone-3);
 }
 
-/* Result — the last step of the same sequence (52 / 58 / 64 / 70), bottom-right, and
-   the first time the form carries colour. The hue is the event, not the scale. */
+/* Result — bottom-right, and the first time the form carries colour. It opens up here
+   because a 9% tint on the light ground reads far softer than a dark tonal plane of the
+   same size: an atmosphere behind the answer, not an object. The hue is the event. */
 [data-phase='3'] {
-  --plane-r: max(70vmin, 40vh);
+  --plane-r: max(66vmin, 40vh);
   --plane-fill: color-mix(in oklab, var(--risk-color) var(--plane-tint), var(--bg));
   --offset-x: calc(var(--offset) * -1);
   --offset-y: calc(var(--offset) * -1);
