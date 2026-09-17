@@ -210,9 +210,11 @@ ul {
     border-color 160ms ease;
 }
 
+/* Once answered, the line is dropped; the chevron carries the affordance.
+   The hover rule below restores it on interaction. */
 .selector__trigger[data-chosen='true'] {
   color: var(--fg);
-  border-bottom-color: var(--fg);
+  border-bottom-color: transparent;
 }
 
 .selector__trigger:hover {
@@ -381,6 +383,12 @@ ul {
   font-weight: 500;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
+}
+
+/* Local spacing for the range dash, so the amounts stay tight. */
+.impact-range__dash {
+  display: inline-block;
+  margin-inline: 0.1em 0.14em;
 }
 
 .impact-note {

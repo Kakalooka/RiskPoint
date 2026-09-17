@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
-import { formatLossRange } from '../content';
+import { lossRangeParts } from '../content';
 import { MODEL_VERSION, LOSS_MODEL_VERSION, type Answers } from '../model/config';
 import { evaluate } from '../model';
 import { LeadPanel } from './LeadPanel';
@@ -14,6 +14,7 @@ interface ResultProps {
 
 export function Result({ answers, onEdit }: ResultProps) {
   const result = evaluate(answers);
+  const [lossFrom, lossTo] = lossRangeParts(result.loss);
   const [leadOpen, setLeadOpen] = useState(false);
   const [methodOpen, setMethodOpen] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -37,7 +38,9 @@ export function Result({ answers, onEdit }: ResultProps) {
           Potential financial impact
         </p>
         <p className="impact-range reveal" style={order(4)}>
-          {formatLossRange(result.loss)}
+          {lossFrom}
+          <span className="impact-range__dash">–</span>
+          {lossTo}
         </p>
         <p className="impact-note reveal" style={order(5)}>
           Illustrative estimate.

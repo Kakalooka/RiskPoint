@@ -13,11 +13,12 @@ export const QUESTIONS = [
   },
 ] as const;
 
-function formatEuro(value: number): string {
+export function formatEuro(value: number): string {
   if (value >= 1_000_000) return `€${+(value / 1_000_000).toFixed(1)}M`;
   return `€${+(value / 1_000).toFixed(0)}k`;
 }
 
-export function formatLossRange({ min, max }: LossRange): string {
-  return `${formatEuro(min)}–${formatEuro(max)}`;
+/** The two amounts are rendered separately so the dash can carry its own spacing. */
+export function lossRangeParts({ min, max }: LossRange): [string, string] {
+  return [formatEuro(min), formatEuro(max)];
 }
