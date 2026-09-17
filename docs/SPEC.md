@@ -44,7 +44,7 @@ Question: "What's your annual revenue?"
 - €300M+
 
 ### Q3 — MFA coverage
-Question: "How widely is multi-factor authentication (MFA) used across your company?"
+Question: "How widely is MFA used across your company?" *(shortened from "How widely is multi-factor authentication (MFA) used across your company?" in the cleanup pass)*
 - Yes, across the company
 - Only for some accounts
 - No

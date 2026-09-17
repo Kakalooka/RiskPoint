@@ -173,11 +173,12 @@ ul {
   text-wrap: balance;
 }
 
+/* Longer questions get a wider measure and a slightly smaller size. */
 .question-title[data-long='true'] {
-  font-size: clamp(26px, 3.4vw, 44px);
-  line-height: 1.12;
-  letter-spacing: -0.03em;
-  max-width: 21ch;
+  font-size: clamp(28px, 3.7vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+  max-width: 26ch;
 }
 
 /* Typographic selector: one line of text that opens in place. */
@@ -251,7 +252,6 @@ ul {
 }
 
 .selector__option {
-  position: relative;
   padding: 11px 28px;
   font-size: clamp(19px, 2vw, 26px);
   line-height: 1.25;
@@ -266,21 +266,10 @@ ul {
   color: var(--fg);
 }
 
+/* Weight and contrast carry the selected state; no second accent. */
 .selector__option[aria-selected='true'] {
   color: var(--fg);
   font-weight: 600;
-}
-
-/* Marker keeps the selected option distinguishable without relying on colour. */
-.selector__option[aria-selected='true']::before {
-  content: '';
-  position: absolute;
-  left: 6px;
-  top: 50%;
-  width: 12px;
-  height: 1.5px;
-  background: currentColor;
-  transform: translateY(-50%);
 }
 
 .stage__action {
@@ -306,11 +295,6 @@ ul {
   position: absolute;
   left: var(--gutter);
   bottom: calc(22px + env(safe-area-inset-bottom));
-}
-
-.assessment__promise {
-  font-size: 12px;
-  color: var(--faint);
 }
 
 .progress {

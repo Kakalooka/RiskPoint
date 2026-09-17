@@ -7,8 +7,7 @@ export const QUESTIONS = [
   { key: 'revenue', title: 'What’s your annual revenue?', placeholder: 'Choose revenue', options: REVENUE_BANDS },
   {
     key: 'mfa',
-    // U+2060 word joiner keeps "multi-factor" on one line (Sora has no non-breaking hyphen glyph).
-    title: 'How widely is multi-⁠factor authentication (MFA) used across your company?',
+    title: 'How widely is MFA used across your company?',
     placeholder: 'Choose coverage',
     options: MFA_OPTIONS,
   },

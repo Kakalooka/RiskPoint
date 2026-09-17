@@ -67,7 +67,6 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
           </button>
         )}
         <Progress step={step} total={QUESTIONS.length} />
-        {step === 0 && <p className="assessment__promise">No sign-up to see your result.</p>}
       </footer>
     </form>
   );
