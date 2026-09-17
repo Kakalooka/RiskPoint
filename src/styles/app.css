@@ -86,15 +86,21 @@ ul {
   translate: var(--offset-x, 0px) var(--offset-y, 0px);
 }
 
-/* ---------- Quarter-turn motif ---------- */
+/* ---------- The curved plane ---------- */
 
 /*
- * The same oversized disc on every screen, centred on a viewport corner so only a
- * quarter of it shows and its straight edges are the edges of the screen.
- * `data-phase` on the screen turns it one corner clockwise per step — Q1 bottom-left
- * → Q2 top-left → Q3 top-right → result bottom-right — grows it, and sets its fill:
- * tonal through the assessment, the risk hue on the result. The circuit closes
- * diagonally opposite where it started.
+ * One oversized disc, centred on a viewport corner so only a quarter of it shows and
+ * its straight edges are the edges of the screen. `data-phase` on the screen sets its
+ * size, crop and fill.
+ *
+ * Through the whole assessment it stays in the same zone — the top-right corner, the
+ * one area no content occupies. Q1 to Q3 vary it only by scale, a few vmin of crop and
+ * one tonal step, so the composition never restates itself: the question stays
+ * dominant and the same idea simply gains presence.
+ *
+ * The result makes the flow's only move: the plane settles down the right edge to the
+ * bottom-right and takes the risk hue. That single change is what marks the
+ * assessment resolving into an answer.
  */
 .plane {
   --plane-out: calc(var(--plane-r) * -1);
@@ -108,46 +114,46 @@ ul {
   animation: fade 640ms var(--ease-out) both;
 }
 
-/* Q1 — bottom-left. Almost subliminal. */
-[data-phase='0'] {
-  --plane-r: max(44vmin, 26vh);
-  --plane-fill: var(--plane-tone-1);
-  --offset-x: var(--offset);
-  --offset-y: calc(var(--offset) * -1);
+/* The assessment zone: one corner, one content offset, for all three questions.
+   `--plane-shift` lowers the centre off the corner, so the crop opens slightly as the
+   form grows instead of reading as a plain zoom. */
+[data-phase='0'] .plane,
+[data-phase='1'] .plane,
+[data-phase='2'] .plane {
+  right: var(--plane-out);
+  top: calc(var(--plane-out) + var(--plane-shift));
 }
 
-[data-phase='0'] .plane {
-  left: var(--plane-out);
-  bottom: var(--plane-out);
-}
-
-/* Q2 — top-left. */
-[data-phase='1'] {
-  --plane-r: max(52vmin, 31vh);
-  --plane-fill: var(--plane-tone-2);
-  --offset-x: var(--offset);
-  --offset-y: var(--offset);
-}
-
-[data-phase='1'] .plane {
-  left: var(--plane-out);
-  top: var(--plane-out);
-}
-
-/* Q3 — top-right. Present enough to crop into the composition. */
+[data-phase='0'],
+[data-phase='1'],
 [data-phase='2'] {
-  --plane-r: max(62vmin, 37vh);
-  --plane-fill: var(--plane-tone-3);
   --offset-x: calc(var(--offset) * -1);
   --offset-y: var(--offset);
 }
 
-[data-phase='2'] .plane {
-  right: var(--plane-out);
-  top: var(--plane-out);
+/* Q1 — quietest tone. */
+[data-phase='0'] {
+  --plane-r: max(52vmin, 26vh);
+  --plane-shift: 0px;
+  --plane-fill: var(--plane-tone-1);
 }
 
-/* Result — bottom-right, largest, and the first time the form carries colour. */
+/* Q2 — one step of scale, crop and tone. */
+[data-phase='1'] {
+  --plane-r: max(58vmin, 29vh);
+  --plane-shift: 3vmin;
+  --plane-fill: var(--plane-tone-2);
+}
+
+/* Q3 — the same again: present, still the same composition. */
+[data-phase='2'] {
+  --plane-r: max(64vmin, 32vh);
+  --plane-shift: 6vmin;
+  --plane-fill: var(--plane-tone-3);
+}
+
+/* Result — the one move: down the right edge, and the first time it carries colour.
+   Barely larger than Q3, so the colour is the event rather than the scale. */
 [data-phase='3'] {
   --plane-r: max(66vmin, 40vh);
   --plane-fill: color-mix(in oklab, var(--risk-color) var(--plane-tint), var(--bg));

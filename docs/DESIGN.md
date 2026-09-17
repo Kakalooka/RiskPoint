@@ -47,41 +47,45 @@ Three small horizontal segments plus a textual equivalent ("1 of 3"), centered a
 ### Risk level *(human-approved direction, simplification pass)*
 The result shows only the user's own level as the hero, with a minimal accent rule in the level's colour. No scale, no three-segment indicator, no gauge, speedometer, ticks or numbers, and nothing that reveals the hidden score.
 
-## Composition — the quarter-turn motif *(human-approved direction, visual exploration v01)*
+## Composition — the curved plane *(human-approved direction, visual exploration v01)*
 The interface is ultra-minimal but no longer floats in undifferentiated space. One geometric form
 gives the flow a composition: an oversized disc whose centre sits on a viewport corner, so exactly
 a quarter of it is visible and its two straight edges are the edges of the screen.
 
-It is always the same form. It takes one clockwise quarter turn per screen, and it grows and gains
-tone as the assessment proceeds:
+**Through the assessment the form stays in one zone** — the top-right corner, the only area no
+content occupies. Q1 to Q3 vary it by scale, a few vmin of crop and one tonal step, and nothing
+else: same corner, same content position, same shape. The composition is never restated, so the
+question and the selector stay dominant and the flow reads as one idea gaining presence rather
+than a new composition per step.
 
-| Screen | Corner | Radius | Fill | Content offset |
-|---|---|---|---|---|
-| Q1 Industry | bottom-left | `max(44vmin, 26vh)` | tone 1 — almost subliminal | right / up |
-| Q2 Revenue | top-left | `max(52vmin, 31vh)` | tone 2 | right / down |
-| Q3 MFA | top-right | `max(62vmin, 37vh)` | tone 3 — crops into the composition | left / down |
-| Result | bottom-right | `max(66vmin, 40vh)` | risk hue as a tint | left / up |
+**The result makes the flow's only move.** The plane settles down the right edge to the
+bottom-right and takes the risk hue. That single change is what marks the assessment resolving
+into an answer.
 
-Three properties make this a system rather than an ornament:
-- **Rotation** — strictly clockwise, one corner per step, closing the circuit diagonally opposite
-  where it started.
-- **Build** — tonal only on the dark screens, so tension grows through the assessment without
-  introducing colour before the result.
-- **Resolution** — the form takes the risk hue on the result. Colour therefore arrives as the
-  payoff of a system rather than as decoration on each screen.
+| Screen | Corner | Radius | Crop shift | Fill | Content offset |
+|---|---|---|---|---|---|
+| Q1 Industry | top-right | `max(52vmin, 26vh)` | 0 | tone 1 | left / down |
+| Q2 Revenue | top-right | `max(58vmin, 29vh)` | 3vmin | tone 2 | left / down |
+| Q3 MFA | top-right | `max(64vmin, 32vh)` | 6vmin | tone 3 | left / down |
+| Result | bottom-right | `max(66vmin, 40vh)` | — | risk hue as a tint | left / up |
+
+`--plane-shift` lowers the centre off the corner, so the crop opens slightly as the form grows
+instead of reading as a plain zoom. The result is only marginally larger than Q3: the colour is
+the event, not the scale.
 
 Rules:
-- Exactly one form per screen. No second shape, no gradient, no texture, no image asset.
-- The form never moves between corners; the turn is read across screens, not animated. Its only
-  motion is the shared opacity fade, which `prefers-reduced-motion` already shortens.
-- It is presentation only: behind all content, never interactive, hidden from assistive tech.
-- Corners are chosen so the coloured result plane never sits under the brand mark and no plane
-  sits under `Back`.
-- Content leans away from the current corner by a small offset (`--offset`), which is zeroed below
-  600px where there is no room for it. This is a slight offset from the optical centre, not a
-  change to the centred layout.
+- Exactly one form, one corner per mode. No second shape, no gradient, no texture, no image asset.
+- No large positional change between question screens, and no per-screen decoration. Variation is
+  limited to scale, crop, tonal step.
+- Tonal only on the dark screens, so presence builds without introducing colour before the result.
+- The form never animates between positions; the change is read across screens, not performed. Its
+  only motion is the shared opacity fade, which `prefers-reduced-motion` already shortens.
+- Presentation only: behind all content, never interactive, hidden from assistive tech.
+- Content leans away from the form by a small offset (`--offset`), identical across all three
+  questions and zeroed below 600px. This is a slight offset from the optical centre, not a change
+  to the centred layout.
 
-### Consequences accepted with the motif
+### Consequences accepted with the plane
 - The expanded selector list carries **no background**. An opaque box cut its own rectangle out of
   the form behind it. Nothing needed masking: the trigger is hidden while the list is open.
 - While the list is open the **footer recedes** (progress and `Back` fade out), exactly as the
@@ -143,10 +147,10 @@ Professional, concise, calm, and clear. Avoid alarmist cyber language or fear-ma
 ---
 
 ## Decision Status
-**Human approved:** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; centered editorial layout; the typographic selector; three-segment progress; the result showing only the user's own level; motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy; the quarter-turn motif as the composition system, with content allowed a slight offset from the exact optical centre.
+**Human approved:** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; centered editorial layout; the typographic selector; three-segment progress; the result showing only the user's own level; motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy; the curved plane as the composition system — one zone through the assessment, varying only by scale, crop and tone, with the single move and the colour arrival on the result — and content allowed a slight offset from the exact optical centre.
 
 *(Superseded by the simplification pass: the left-aligned two-column layout, the answer-row treatment and the three-segment risk indicator.)*
 
-**First-build interpretation (Claude, pending human review):** exact palette values, risk hues, radius, spacing scale, type scale, motion timings, responsive proportions, and the motif's exact radii, tone steps, tint percentage and offset magnitude.
+**First-build interpretation (Claude, pending human review):** exact palette values, risk hues, radius, spacing scale, type scale, motion timings, responsive proportions, and the plane's exact radii, crop shifts, tone steps, tint percentage and offset magnitude.
 
 **Note:** Design decisions must be grounded in research and product goals, not arbitrary preference.

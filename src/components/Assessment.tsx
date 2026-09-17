@@ -34,7 +34,7 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
 
   return (
     // data-theme pins the dark tokens while the page behind transitions to light on exit.
-    // data-phase drives the composition: the motif's corner and size, and the content offset.
+    // data-phase drives the composition: the plane's size, crop and tone, and the content offset.
     <form
       className="assessment"
       data-theme="dark"
@@ -43,8 +43,8 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
       onSubmit={handleSubmit}
       noValidate
     >
-      {/* Keyed so the motif fades in again as it turns to the next corner. The key is
-          namespaced because the stage below is keyed on the same step. */}
+      {/* Keyed so the plane fades in again as the step changes. The key is namespaced
+          because the stage below is keyed on the same step. */}
       <Plane key={`motif-${step}`} />
 
       <div className="stage" key={step}>
