@@ -210,16 +210,16 @@ ul {
     border-color 160ms ease;
 }
 
-/* Once answered, the line is dropped; the chevron carries the affordance.
-   The hover rule below restores it on interaction. */
-.selector__trigger[data-chosen='true'] {
-  color: var(--fg);
-  border-bottom-color: transparent;
-}
-
 .selector__trigger:hover {
   color: var(--fg);
   border-bottom-color: var(--fg);
+}
+
+/* The underline is only a cue that a choice is still needed. Once answered it
+   stays hidden in every state, so this rule follows :hover deliberately. */
+.selector__trigger[data-chosen='true'] {
+  color: var(--fg);
+  border-bottom-color: transparent;
 }
 
 .selector__chevron {
@@ -294,6 +294,7 @@ ul {
 }
 
 .assessment__back {
+  text-decoration: none;
   position: absolute;
   left: var(--gutter);
   bottom: calc(22px + env(safe-area-inset-bottom));
