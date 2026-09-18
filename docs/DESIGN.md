@@ -48,50 +48,53 @@ Three small horizontal segments plus a textual equivalent ("1 of 3"), centered a
 The result shows only the user's own level as the hero, with a minimal accent rule in the level's colour. No scale, no three-segment indicator, no gauge, speedometer, ticks or numbers, and nothing that reveals the hidden score.
 
 ## Composition — the curved plane *(human-approved direction, visual exploration v01)*
-The interface is ultra-minimal but no longer floats in undifferentiated space. One geometric form
-gives the flow a composition: an oversized disc whose centre sits on a viewport corner, so exactly
-a quarter of it is visible and its two straight edges are the edges of the screen.
+One geometric form gives the flow a quiet composition: a disc whose centre sits on a viewport
+corner, so exactly a quarter of it is visible and its two straight edges are the edges of the
+screen. It is a **restrained compositional accent**, never an object competing with the content,
+and it stays out of the reading area on every screen. The screens read as a website hero, not a
+poster.
 
-**Every question screen holds the same corner — bottom-left — and the same content position.** The
-only progression across Q1, Q2 and Q3 is a small step of scale, with a matching step of tone. No
-question screen restates the composition, so the question and the selector stay dominant and the
-flow reads as one idea gaining presence rather than a new composition per step.
+- **Questions:** bottom-left on all three. Only the radius changes, in steps of about 5%, with a
+  matching small step of tone. The progression reads in comparison, not at first glance. The plane
+  stays mounted across the questions, so between steps it only changes size — it does not fade out
+  and back in.
+- **Result:** bottom-right, in the risk hue as a 9% tint.
+- **Content is exactly centred** on every screen. There is no content offset, so nothing in the
+  reading area moves between screens.
 
-**The result resolves the system.** The plane takes the last step of the same scale sequence, sits
-in the bottom-right, and carries the risk hue. That is the only change of position in the flow, and
-the hue is the event rather than the scale.
+| Screen | Corner | Radius | Fill |
+|---|---|---|---|
+| Q1 Industry | bottom-left | `clamp(150px, 30vmin, 300px)` | tone 1 |
+| Q2 Revenue | bottom-left | `clamp(158px, 31.5vmin, 315px)` | tone 2 |
+| Q3 MFA | bottom-left | `clamp(165px, 33vmin, 330px)` | tone 3 |
+| Result | bottom-right | `clamp(140px, hero × 1.4 + 8vmin, 420px)` | risk hue as a tint |
 
-| Screen | Corner | Radius | Fill | Content offset |
-|---|---|---|---|---|
-| Q1 Industry | bottom-left | `max(44vmin, 22vh)` | tone 1 | right / up |
-| Q2 Revenue | bottom-left | `max(49vmin, 25vh)` | tone 2 | right / up |
-| Q3 MFA | bottom-left | `max(54vmin, 27vh)` | tone 3 | right / up |
-| Result | bottom-right | `max(66vmin, 40vh)` | risk hue as a tint | left / up |
+### Sizing rule
+Text in this interface stops growing at its `clamp` maximum (the level word caps at 190px from about
+1267px wide), so a plane sized purely in viewport units outgrows the text on large monitors. Measured
+before this rule, the result plane ran from 2.5× to 5.0× the level word across desktop sizes, and at
+1024×768 it slid behind the CTA.
 
-The question radii are sized by **clearance from the content**, not by a formula: the form reads as
-atmosphere in the corner and never competes with the question. Measured at 1440×900, the gap from
-the plane's edge to the nearest content element is 322px on Q1, 236px on Q2 and 197px on Q3 — a
-gentle closing-in, with Q3 the closest approach and no intrusion at any step. At 375×812 the
-closest element is 326px away on Q1 and 69px on Q3, again with no overlap.
-
-The result's radius is larger by design and is the size the approved result screen was reviewed
-with: a 9% tint on the light ground reads far softer than a dark tonal plane of the same size, so
-the form stays a background accent while the level word carries the screen.
+- **Result:** the radius is sized in units of the level word (`--hero-size`, shared with
+  `.risk-level`), plus a small `vmin` term so it does not shrink into the corner on large screens.
+  Measured ratio of radius to level word: 1.81 (1024×768), 1.70 (1280×720), 1.72 (1366×768), 1.78
+  (1440×900), 1.76 (1536×864), 1.85 (1920×1080), 2.01 (2560×1440). No intrusion at any size. Because
+  the plane is anchored to the corner and the content is centred, the distance between them grows on
+  larger screens: more air, never more competition.
+- **Questions:** radii are capped so the plane cannot keep growing on large monitors while the
+  question does not.
 
 Rules:
-- Exactly one form, one corner per mode. No second shape, no gradient, no texture, no image asset.
-- No positional change between question screens. Variation is limited to scale and one tonal step
-  — no per-screen crop, rotation or decoration.
-- Tonal only on the dark screens, so presence builds without introducing colour before the result.
-- The form never animates between positions; the change is read across screens, not performed. Its
-  only motion is the shared opacity fade, which `prefers-reduced-motion` already shortens.
+- One form, one corner per mode. No second shape, gradient, texture or image asset.
+- No positional change between question screens; variation is limited to a small step of scale and
+  tone.
+- The form never animates between positions. Its only motion is an opacity fade when a mode first
+  appears, which `prefers-reduced-motion` shortens.
 - Presentation only: behind all content, never interactive, hidden from assistive tech.
-- Content leans away from the form by a small offset (`--offset`), identical across all three
-  questions and zeroed below 600px. This is a slight offset from the optical centre, not a change
-  to the centred layout.
-- The reading area is never intruded on. Only the footer sits over the plane — `Back` on every
-  question screen, and the progress row on narrow screens — and both are measured: the muted text
-  keeps 6.07:1 on the largest, brightest tone.
+- Only the footer can sit over the plane (`Back`, and the progress row on narrow screens). The muted
+  text keeps at least 6.42:1 on the brightest tone.
+- `<html>` reserves no scrollbar gutter. On Windows a reserved gutter keeps fixed content 15px off the
+  right edge, which cut the result plane short of the screen edge it is anchored to.
 
 ### Consequences accepted with the plane
 - The expanded selector list carries **no background**. An opaque box cut its own rectangle out of
@@ -155,10 +158,10 @@ Professional, concise, calm, and clear. Avoid alarmist cyber language or fear-ma
 ---
 
 ## Decision Status
-**Human approved:** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; centered editorial layout; the typographic selector; three-segment progress; the result showing only the user's own level; motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy; the curved plane as the composition system — bottom-left on all three question screens, clear of the content and varying only by a small step of scale and tone, resolving in the bottom-right on the result where it takes the risk hue — and content allowed a slight offset from the exact optical centre.
+**Human approved:** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; centered editorial layout; the typographic selector; three-segment progress; the result showing only the user's own level; motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy; the curved plane as a restrained compositional accent — bottom-left on all three question screens, varying only by a small step of scale and tone, bottom-right on the result in the risk hue and sized from the level word — with content exactly centred.
 
 *(Superseded by the simplification pass: the left-aligned two-column layout, the answer-row treatment and the three-segment risk indicator.)*
 
-**First-build interpretation (Claude, pending human review):** exact palette values, risk hues, radius, spacing scale, type scale, motion timings, responsive proportions, and the plane's exact radii, tone steps, tint percentage and offset magnitude.
+**First-build interpretation (Claude, pending human review):** exact palette values, risk hues, radius, spacing scale, type scale, motion timings, responsive proportions, and the plane's exact radii, tone steps and tint percentage.
 
 **Note:** Design decisions must be grounded in research and product goals, not arbitrary preference.

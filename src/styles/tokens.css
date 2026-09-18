@@ -9,9 +9,6 @@
 
   --gutter: 20px;
 
-  /* Content leans away from the motif. No room for it on small screens. */
-  --offset: 0px;
-
   --ease-out: cubic-bezier(0.22, 0.8, 0.24, 1);
   --theme-ms: 480ms;
   --exit-ms: 220ms;
@@ -23,7 +20,6 @@
 @media (min-width: 600px) {
   :root {
     --gutter: 40px;
-    --offset: clamp(10px, 1.6vw, 22px);
   }
 }
 
@@ -49,10 +45,11 @@
   --disabled-fg: #75787e;
   --focus: #f3f2ef;
 
-  /* The motif stays tonal here: three small steps above the ground, no colour. */
-  --plane-tone-1: #151619;
-  --plane-tone-2: #1a1b1f;
-  --plane-tone-3: #1f2024;
+  /* The plane stays tonal here, just above the ground. The three steps are close
+     together on purpose: the change reads in comparison, not at first glance. */
+  --plane-tone-1: #16171a;
+  --plane-tone-2: #18191c;
+  --plane-tone-3: #1a1b1e;
 }
 
 /* Result: answer / clarity. Semantic colour appears here for the first time. */

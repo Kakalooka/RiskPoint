@@ -34,7 +34,7 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
 
   return (
     // data-theme pins the dark tokens while the page behind transitions to light on exit.
-    // data-phase drives the composition: the plane's size, crop and tone, and the content offset.
+    // data-phase sets the plane's size and tone for the current question.
     <form
       className="assessment"
       data-theme="dark"
@@ -43,9 +43,9 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
       onSubmit={handleSubmit}
       noValidate
     >
-      {/* Keyed so the plane fades in again as the step changes. The key is namespaced
-          because the stage below is keyed on the same step. */}
-      <Plane key={`motif-${step}`} />
+      {/* Not keyed: the plane stays mounted across questions, so between steps it only
+          changes size instead of fading out and back in. */}
+      <Plane />
 
       <div className="stage" key={step}>
         <h1

@@ -1,17 +1,15 @@
 /**
  * The curved plane.
  *
- * One oversized disc whose centre sits on a viewport corner, so a quarter of it is
- * visible and its two straight edges are the edges of the screen.
+ * One disc whose centre sits on a viewport corner, so a quarter of it is visible and
+ * its two straight edges are the edges of the screen. A compositional accent, kept out
+ * of the reading area.
  *
- * It holds the same corner — bottom-left — for all three questions and varies only by
- * one small step of scale and tone, so no question screen restates the composition.
- * The result resolves it in the bottom-right, carrying the risk hue: the only change of
- * position in the flow. It is larger there because a tint on the light ground reads far
- * softer than a dark tonal plane of the same size.
+ * Bottom-left on the three questions, where only its size and tone step up slightly;
+ * bottom-right on the result, in the risk hue, sized from the level word so it keeps
+ * the same proportion to the content at any viewport.
  *
- * Corner, size and fill come from `data-phase` on the surrounding screen, so
- * the composition is a function of the step rather than of this element.
+ * Corner, size and fill come from `data-phase` on the surrounding screen.
  * Presentation only: it sits behind all content and is never interactive.
  */
 export function Plane() {

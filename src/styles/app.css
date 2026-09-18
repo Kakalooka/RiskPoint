@@ -6,8 +6,9 @@
   box-sizing: border-box;
 }
 
+/* No reserved scrollbar gutter: on Windows it keeps fixed content 15px off the right
+   edge, which cut the result plane short of the screen edge it is anchored to. */
 html {
-  scrollbar-gutter: stable;
   background-color: var(--bg);
   color: var(--fg);
   transition:
@@ -81,25 +82,20 @@ ul {
   max-width: 760px;
   margin-inline: auto;
   padding: 24px var(--gutter) 40px;
-  /* Leans away from the motif. `translate` is used rather than `transform` so it
-     composes with the entrance keyframes instead of being overridden by them. */
-  translate: var(--offset-x, 0px) var(--offset-y, 0px);
 }
 
 /* ---------- The curved plane ---------- */
 
 /*
- * One oversized disc, centred on a viewport corner so only a quarter of it shows and
- * its straight edges are the edges of the screen.
+ * One disc, centred on a viewport corner so only a quarter of it shows and its
+ * straight edges are the edges of the screen. It is a compositional accent, kept out
+ * of the reading area on every screen.
  *
- * Every question screen holds the same corner — bottom-left — and the same content
- * position. The only progression is scale: one small step per screen, with a matching
- * step of tone. The radii are kept well inside the content block, so the form reads as
- * atmosphere in the corner rather than an object competing with the question; Q3 is the
- * closest approach and still clears the interaction by a wide margin.
+ * The question screens hold the bottom-left corner. Between them only the radius
+ * changes, in steps of about 5%, with a matching step of tone: the progression reads
+ * in comparison, not at first glance.
  *
- * The result resolves the system: one step larger again, on the other side of the
- * bottom edge, carrying the risk hue. It is the only change of position in the flow.
+ * The result holds the bottom-right corner and carries the risk hue.
  */
 .plane {
   --plane-out: calc(var(--plane-r) * -1);
@@ -113,8 +109,6 @@ ul {
   animation: fade 640ms var(--ease-out) both;
 }
 
-/* The assessment: one corner and one content offset for all three questions, so
-   nothing but the plane's scale and tone changes between them. */
 [data-phase='0'] .plane,
 [data-phase='1'] .plane,
 [data-phase='2'] .plane {
@@ -122,39 +116,33 @@ ul {
   bottom: var(--plane-out);
 }
 
-[data-phase='0'],
-[data-phase='1'],
-[data-phase='2'] {
-  --offset-x: var(--offset);
-  --offset-y: calc(var(--offset) * -1);
-}
-
-/* Q1 — smallest, quietest tone. Clear of the content block. */
+/* The question text stops growing at its clamp, so the radius is capped too: on a
+   large monitor the plane must not keep growing while the question does not. */
 [data-phase='0'] {
-  --plane-r: max(44vmin, 22vh);
+  --plane-r: clamp(150px, 30vmin, 300px);
   --plane-fill: var(--plane-tone-1);
 }
 
-/* Q2 — one step of scale and tone, still clear of the content block. */
 [data-phase='1'] {
-  --plane-r: max(49vmin, 25vh);
+  --plane-r: clamp(158px, 31.5vmin, 315px);
   --plane-fill: var(--plane-tone-2);
 }
 
-/* Q3 — one step again: it comes a little closer to the content, and no further. */
+/* Q3 — the closest approach, and still well clear of the question. */
 [data-phase='2'] {
-  --plane-r: max(54vmin, 27vh);
+  --plane-r: clamp(165px, 33vmin, 330px);
   --plane-fill: var(--plane-tone-3);
 }
 
-/* Result — bottom-right, and the first time the form carries colour. It opens up here
-   because a 9% tint on the light ground reads far softer than a dark tonal plane of the
-   same size: an atmosphere behind the answer, not an object. The hue is the event. */
+/*
+ * Result. The radius is sized in units of the level word, not of the viewport, so the
+ * plane keeps the same proportion to LOW / MID / HIGH, the range and the CTA as the
+ * screen changes. The small vmin term lets it breathe on large monitors instead of
+ * shrinking into the corner; on its own it would let the plane outgrow the text.
+ */
 [data-phase='3'] {
-  --plane-r: max(66vmin, 40vh);
+  --plane-r: clamp(140px, calc(var(--hero-size) * 1.4 + 8vmin), 420px);
   --plane-fill: color-mix(in oklab, var(--risk-color) var(--plane-tint), var(--bg));
-  --offset-x: calc(var(--offset) * -1);
-  --offset-y: calc(var(--offset) * -1);
 }
 
 [data-phase='3'] .plane {
@@ -427,6 +415,8 @@ ul {
 /* ---------- Result ---------- */
 
 .result {
+  /* The level word's size. The result plane is sized from it too. */
+  --hero-size: clamp(84px, 15vw, 190px);
   flex: 1;
   display: flex;
 }
@@ -451,7 +441,7 @@ ul {
 
 .risk-level {
   margin-top: 10px;
-  font-size: clamp(84px, 15vw, 190px);
+  font-size: var(--hero-size);
   line-height: 0.92;
   font-weight: 600;
   letter-spacing: -0.05em;
