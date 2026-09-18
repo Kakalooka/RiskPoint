@@ -88,14 +88,14 @@ ul {
 
 /*
  * One disc, centred on a viewport corner so only a quarter of it shows and its
- * straight edges are the edges of the screen. It is a compositional accent, kept out
- * of the reading area on every screen.
+ * straight edges are the edges of the screen. A compositional accent: the text and the
+ * interaction stay primary on every screen.
  *
- * The question screens hold the bottom-left corner. Between them only the radius
- * changes, in steps of about 5%, with a matching step of tone: the progression reads
- * in comparison, not at first glance.
- *
- * The result holds the bottom-right corner and carries the risk hue.
+ * Its radius is measured to the content, not to the viewport: it is the distance from
+ * the corner to a fixed point on the content column, less a gap. The arc therefore
+ * meets the content in the same place at any aspect ratio. Viewport units alone would
+ * keep the plane's share of the screen constant while the text stops growing at its
+ * clamp, so the balance would shift from one screen shape to the next.
  */
 .plane {
   --plane-out: calc(var(--plane-r) * -1);
@@ -109,6 +109,20 @@ ul {
   animation: fade 640ms var(--ease-out) both;
 }
 
+/*
+ * Questions: bottom-left. The reference point is the lower-left of the forward button,
+ * 72px left of and 150px below the viewport centre; the arc stays 210px short of it.
+ * Capped at 560px so it cannot keep growing on large monitors, where the question no
+ * longer does. The three questions differ only by a 3% step of that radius and a
+ * matching step of tone: the change reads in comparison, not at first glance.
+ */
+[data-phase='0'],
+[data-phase='1'],
+[data-phase='2'] {
+  --plane-base: clamp(150px, calc(hypot(50vw - 72px, 50vh - 150px) - 210px), 560px);
+  --plane-r: calc(var(--plane-base) * var(--plane-step));
+}
+
 [data-phase='0'] .plane,
 [data-phase='1'] .plane,
 [data-phase='2'] .plane {
@@ -116,32 +130,31 @@ ul {
   bottom: var(--plane-out);
 }
 
-/* The question text stops growing at its clamp, so the radius is capped too: on a
-   large monitor the plane must not keep growing while the question does not. */
 [data-phase='0'] {
-  --plane-r: clamp(150px, 30vmin, 300px);
+  --plane-step: 1;
   --plane-fill: var(--plane-tone-1);
 }
 
 [data-phase='1'] {
-  --plane-r: clamp(158px, 31.5vmin, 315px);
+  --plane-step: 1.03;
   --plane-fill: var(--plane-tone-2);
 }
 
-/* Q3 — the closest approach, and still well clear of the question. */
 [data-phase='2'] {
-  --plane-r: clamp(165px, 33vmin, 330px);
+  --plane-step: 1.06;
   --plane-fill: var(--plane-tone-3);
 }
 
 /*
- * Result. The radius is sized in units of the level word, not of the viewport, so the
- * plane keeps the same proportion to LOW / MID / HIGH, the range and the CTA as the
- * screen changes. The small vmin term lets it breathe on large monitors instead of
- * shrinking into the corner; on its own it would let the plane outgrow the text.
+ * Result: bottom-right, in the risk hue, and a clear step up from the questions. The
+ * reference point sits just right of the financial range, 180px right of and 80px below
+ * the viewport centre, and the arc stops 30px short of it: it passes behind the end of
+ * the links row and the edge of the CTA, while the range keeps about 30px of air and
+ * the level word stays well clear. Capped at 660px for the same reason as the
+ * questions.
  */
 [data-phase='3'] {
-  --plane-r: clamp(140px, calc(var(--hero-size) * 1.4 + 8vmin), 420px);
+  --plane-r: clamp(160px, calc(hypot(50vw - 180px, 50vh - 80px) - 30px), 660px);
   --plane-fill: color-mix(in oklab, var(--risk-color) var(--plane-tint), var(--bg));
 }
 
@@ -415,8 +428,6 @@ ul {
 /* ---------- Result ---------- */
 
 .result {
-  /* The level word's size. The result plane is sized from it too. */
-  --hero-size: clamp(84px, 15vw, 190px);
   flex: 1;
   display: flex;
 }
@@ -441,7 +452,7 @@ ul {
 
 .risk-level {
   margin-top: 10px;
-  font-size: var(--hero-size);
+  font-size: clamp(84px, 15vw, 190px);
   line-height: 0.92;
   font-weight: 600;
   letter-spacing: -0.05em;
