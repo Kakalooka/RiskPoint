@@ -93,27 +93,39 @@ ul {
  * One disc, centred on the bottom-right corner so only a quarter of it shows and its
  * straight edges are the edges of the screen, in the risk hue as a tint.
  *
- * Its radius is measured to the content, not to the viewport: it is the distance from
- * the corner to a point just right of the financial range, 180px right of and 80px
- * below the viewport centre, less 30px. The arc therefore meets the content in the same
- * place at any aspect ratio: it passes behind the end of the links row and the edge of
- * the CTA, while the range keeps about 30px of air and the level word stays well clear.
- * Capped at 660px so it cannot keep growing on large monitors, where the text no longer
- * does.
+ * The 9:16 composition is the reference (measured at 566×915). There the disc is
+ * centred on the bottom-right corner, 283px right of and 293px below the CTA's centre,
+ * with a 361px radius: the arc passes behind the right part of the CTA and the end of
+ * the links row, while the range and the level word stay clear.
+ *
+ * Centring on the real corner made that composition drift on wider screens, because the
+ * corner moves away from the centred content. So the reference circle is pinned to the
+ * CTA instead (its centre is measured in Plane.tsx). The CTA and links are the same size
+ * at every width, so the arc meets them exactly as in the reference. Everything right
+ * of and below the arc is filled, clipped by the result, so the plane still runs to the
+ * right and bottom edges: where the arc's centre is inside the screen, it continues as
+ * a flat top edge and a straight left edge, both tangent to the arc. At the reference
+ * size the shape is exactly the quarter disc.
  */
 .plane {
-  --plane-r: clamp(160px, calc(hypot(50vw - 180px, 50vh - 80px) - 30px), 660px);
-  --plane-out: calc(var(--plane-r) * -1);
-  position: fixed;
+  --plane-r: 361px;
+  --plane-dx: 283px;
+  --plane-dy: 293px;
+  position: absolute;
   z-index: -1;
-  right: var(--plane-out);
-  bottom: var(--plane-out);
-  width: calc(var(--plane-r) * 2);
-  height: calc(var(--plane-r) * 2);
-  border-radius: 50%;
+  left: calc(var(--anchor-x) + var(--plane-dx) - var(--plane-r));
+  top: calc(var(--anchor-y) + var(--plane-dy) - var(--plane-r));
+  width: calc(var(--plane-r) + 100vw);
+  height: calc(var(--plane-r) + 200vh);
+  border-top-left-radius: var(--plane-r);
   background: color-mix(in oklab, var(--risk-color) var(--plane-tint), var(--bg));
   pointer-events: none;
   animation: fade 640ms var(--ease-out) both;
+}
+
+/* Hidden until its anchor has been measured, so it never renders unpositioned. */
+.plane:not([data-placed]) {
+  display: none;
 }
 
 /* ---------- Buttons ---------- */
@@ -378,9 +390,12 @@ ul {
 
 /* ---------- Result ---------- */
 
+/* Positioning context for the plane; clip keeps its oversized fill from causing scroll. */
 .result {
   flex: 1;
   display: flex;
+  position: relative;
+  overflow: clip;
 }
 
 .result[data-level='LOW'] {

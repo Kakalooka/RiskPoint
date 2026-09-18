@@ -54,6 +54,7 @@ export function Result({ answers, onEdit }: ResultProps) {
           <button
             type="button"
             className="button button--primary"
+            data-plane-anchor
             aria-expanded={leadOpen}
             aria-controls="lead-panel"
             onClick={() => setLeadOpen((open) => !open)}
