@@ -87,80 +87,33 @@ ul {
 /* ---------- The curved plane ---------- */
 
 /*
- * One disc, centred on a viewport corner so only a quarter of it shows and its
- * straight edges are the edges of the screen. A compositional accent: the text and the
- * interaction stay primary on every screen.
+ * The result's reveal. The questions are left empty on purpose, so the plane appears
+ * for the first time with the answer, as part of the change from dark to light.
+ *
+ * One disc, centred on the bottom-right corner so only a quarter of it shows and its
+ * straight edges are the edges of the screen, in the risk hue as a tint.
  *
  * Its radius is measured to the content, not to the viewport: it is the distance from
- * the corner to a fixed point on the content column, less a gap. The arc therefore
- * meets the content in the same place at any aspect ratio. Viewport units alone would
- * keep the plane's share of the screen constant while the text stops growing at its
- * clamp, so the balance would shift from one screen shape to the next.
+ * the corner to a point just right of the financial range, 180px right of and 80px
+ * below the viewport centre, less 30px. The arc therefore meets the content in the same
+ * place at any aspect ratio: it passes behind the end of the links row and the edge of
+ * the CTA, while the range keeps about 30px of air and the level word stays well clear.
+ * Capped at 660px so it cannot keep growing on large monitors, where the text no longer
+ * does.
  */
 .plane {
+  --plane-r: clamp(160px, calc(hypot(50vw - 180px, 50vh - 80px) - 30px), 660px);
   --plane-out: calc(var(--plane-r) * -1);
   position: fixed;
   z-index: -1;
+  right: var(--plane-out);
+  bottom: var(--plane-out);
   width: calc(var(--plane-r) * 2);
   height: calc(var(--plane-r) * 2);
   border-radius: 50%;
-  background: var(--plane-fill);
+  background: color-mix(in oklab, var(--risk-color) var(--plane-tint), var(--bg));
   pointer-events: none;
   animation: fade 640ms var(--ease-out) both;
-}
-
-/*
- * Questions: bottom-left. The reference point is the lower-left of the forward button,
- * 72px left of and 150px below the viewport centre; the arc stays 210px short of it.
- * Capped at 560px so it cannot keep growing on large monitors, where the question no
- * longer does. The three questions differ only by a 3% step of that radius and a
- * matching step of tone: the change reads in comparison, not at first glance.
- */
-[data-phase='0'],
-[data-phase='1'],
-[data-phase='2'] {
-  --plane-base: clamp(150px, calc(hypot(50vw - 72px, 50vh - 150px) - 210px), 560px);
-  --plane-r: calc(var(--plane-base) * var(--plane-step));
-}
-
-[data-phase='0'] .plane,
-[data-phase='1'] .plane,
-[data-phase='2'] .plane {
-  left: var(--plane-out);
-  bottom: var(--plane-out);
-}
-
-[data-phase='0'] {
-  --plane-step: 1;
-  --plane-fill: var(--plane-tone-1);
-}
-
-[data-phase='1'] {
-  --plane-step: 1.03;
-  --plane-fill: var(--plane-tone-2);
-}
-
-[data-phase='2'] {
-  --plane-step: 1.06;
-  --plane-fill: var(--plane-tone-3);
-}
-
-/*
- * Result: bottom-right, in the risk hue, and a clear step up from the questions. The
- * reference point sits just right of the financial range, 180px right of and 80px below
- * the viewport centre, and the arc stops 30px short of it: it passes behind the end of
- * the links row and the edge of the CTA, while the range keeps about 30px of air and
- * the level word stays well clear. Capped at 660px for the same reason as the
- * questions.
- */
-[data-phase='3'] {
-  --plane-r: clamp(160px, calc(hypot(50vw - 180px, 50vh - 80px) - 30px), 660px);
-  --plane-fill: color-mix(in oklab, var(--risk-color) var(--plane-tint), var(--bg));
-}
-
-[data-phase='3'] .plane {
-  right: var(--plane-out);
-  bottom: var(--plane-out);
 }
 
 /* ---------- Buttons ---------- */
@@ -329,9 +282,8 @@ ul {
   max-height: min(52vh, 420px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  /* No background: an opaque box would cut its own rectangle out of the motif
-     behind it. Nothing needs masking — the trigger is hidden while the list is open
-     and the forward action is faded out. */
+  /* No background: nothing needs masking — the trigger is hidden while the list is
+     open, the forward action is faded out and the footer recedes. */
   animation: reveal-list 220ms var(--ease-out) both;
 }
 
@@ -377,8 +329,7 @@ ul {
 }
 
 /* The open list owns the screen: the forward action above and the footer below both
-   recede, so a long list can scroll without colliding with the progress row. The
-   list itself stays transparent, which keeps the motif behind it whole. */
+   recede, so a long list can scroll without colliding with the progress row. */
 .assessment:has(.selector[data-open='true']) .assessment__footer {
   opacity: 0;
   pointer-events: none;

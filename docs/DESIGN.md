@@ -47,69 +47,60 @@ Three small horizontal segments plus a textual equivalent ("1 of 3"), centered a
 ### Risk level *(human-approved direction, simplification pass)*
 The result shows only the user's own level as the hero, with a minimal accent rule in the level's colour. No scale, no three-segment indicator, no gauge, speedometer, ticks or numbers, and nothing that reveals the hidden score.
 
-## Composition — the curved plane *(human-approved direction, visual exploration v01)*
-One geometric form gives the flow a quiet composition: a disc whose centre sits on a viewport
-corner, so exactly a quarter of it is visible and its two straight edges are the edges of the
-screen. The text and the interaction stay primary on every screen, and the screens read as a
-website, not a poster.
+## Composition — the curved plane as the result's reveal *(variant v02, for comparison with v01)*
+One geometric form, used once. The three question screens carry **no motif at all**: dark, quiet,
+almost empty, concentrated on the question. The curved plane appears for the first time on the
+result, as part of the change from dark to light:
 
-- **Questions (Q1–Q3):** bottom-left. The plane keeps a clear distance from the text. Between the
-  three questions it changes only by a 3% step of radius and a matching small step of tone — close
-  enough that the change is visible side by side, not at first glance. It stays mounted across the
-  questions, so between steps it only changes size.
-- **Result:** bottom-right, in the risk hue as a 9% tint, and a clearly larger step from Q3. It
-  enters the composition more than on the dark screens: the arc passes behind the end of the links
-  row and the edge of the CTA, while the € range and the level word stay clear.
-- **Content is exactly centred** on every screen; nothing in the reading area moves between screens.
+- **Questions (Q1–Q3):** dark and empty. Tension, uncertainty, night.
+- **Result:** clarity, resolution, relief. A disc centred on the bottom-right corner, so a quarter of
+  it is visible and its straight edges are the edges of the screen, in the risk hue as a 9% tint.
+  It enters the composition gently: the arc passes behind the end of the links row and the edge of
+  the CTA, while the € range and the level word stay clear.
+- **Content is exactly centred** on every screen.
+
+*(Variant v01, on branch `claude/visual-exploration-v01`, also places a tonal plane in the
+bottom-left of each question screen, stepping up 3% per question. The result screen is identical in
+both variants — verified pixel-identical at 611×922, 1280×720, 1440×900 and 1920×1080.)*
 
 ### Sizing rule — measured to the content
-The radius is the distance from the plane's corner to a fixed point on the content column, less a
-gap, computed in CSS with `hypot()`. The arc therefore meets the content in the same place at any
-aspect ratio. Sizing in viewport units alone does not hold the relationship: the text stops growing
-at its `clamp` maximum, and the corner moves relative to centred content as the aspect ratio
-changes.
+The radius is the distance from the bottom-right corner to a point just right of the financial range
+(180px right of and 80px below the viewport centre), less 30px, computed in CSS with `hypot()`:
+`clamp(160px, hypot(50vw − 180px, 50vh − 80px) − 30px, 660px)`. The arc therefore meets the content
+in the same place at any aspect ratio. Sizing in viewport units alone does not hold the relationship:
+the text stops growing at its `clamp` maximum, and the corner moves relative to centred content as the
+aspect ratio changes. The cap stops the plane growing on large monitors where the text no longer
+grows; there, the distance to the content opens up instead.
 
-| Screen | Corner | Reference point (from viewport centre) | Radius | Fill |
+**Calibration.** The human-approved reference was captured at about 611×922. At that viewport the
+rule gives a 371px radius against 401px in the reference, with the same arrangement — behind the CTA's
+end and the links, the range clear by 64px against 60px. It is deliberately a little smaller so the
+range keeps at least 30px of air on desktop.
+
+**Measured** (gap from the arc to the nearest glyph or button; negative means the arc passes behind it):
+
+| Viewport | Links | CTA | Range | Level |
 |---|---|---|---|---|
-| Q1–Q3 | bottom-left | 72px left, 150px down (lower-left of the forward button) | `clamp(150px, hypot(…) − 210px, 560px)` × 1 / 1.03 / 1.06 | tone 1 / 2 / 3 |
-| Result | bottom-right | 180px right, 80px down (just right of the € range) | `clamp(160px, hypot(…) − 30px, 660px)` | risk hue as a tint |
-
-The caps stop the plane growing on large monitors where the text no longer grows; there, the
-distance to the content opens up instead.
-
-**Calibration.** The two human-approved reference screenshots were captured at about 1307×1260 (Q1)
-and 611×922 (result). At those viewports the rule reproduces them: Q1 radius 544px against 542px in
-the reference; result radius 371px against 401px, with the same arrangement — behind the CTA's end
-and the links, the range clear by 64px against 60px.
-
-**Measured on desktop viewports** (gap from the arc to the nearest glyph or button; negative means
-the arc passes behind it):
-
-| Viewport | Q1 nearest | Q3 nearest | Result: links / CTA / range / level |
-|---|---|---|---|
-| 1024×768 | 181 | 181 | −28 / −8 / +61 / +118 |
-| 1280×720 | 162 | 137 | +4 / +15 / +37 / +67 |
-| 1366×768 | 154 | 133 | −1 / +12 / +34 / +70 |
-| 1440×900 | 176 | 150 | −23 / −4 / +30 / +82 |
-| 1536×864 | 155 | 129 | −9 / +7 / +34 / +76 |
-| 1920×1080 | 361 (cap) | 333 (cap) | about +200 (cap) |
+| 1024×768 | −28 | −8 | +61 | +118 |
+| 1280×720 | +4 | +15 | +37 | +67 |
+| 1366×768 | −1 | +12 | +34 | +70 |
+| 1440×900 | −23 | −4 | +30 | +82 |
+| 1536×864 | −9 | +7 | +34 | +76 |
+| 1920×1080 | about +200 (cap) | | | |
 
 Rules:
-- One form, one corner per mode. No second shape, gradient, texture or image asset.
-- No positional change between question screens; variation is limited to a small step of scale and
-  tone.
-- The form never animates between positions. Its only motion is an opacity fade when a mode first
-  appears, which `prefers-reduced-motion` shortens.
+- One form, on the result only. No second shape, gradient, texture or image asset; nothing on the
+  question screens.
+- Its only motion is the opacity fade as the result appears, which `prefers-reduced-motion` shortens.
 - Presentation only: behind all content, never interactive, hidden from assistive tech.
-- On the question screens only the footer can sit over the plane (`Back`, and the progress row on
-  narrow screens). The muted text keeps at least 6.42:1 on the brightest tone.
 - `<html>` reserves no scrollbar gutter. On Windows a reserved gutter keeps fixed content 15px off the
-  right edge, which cut the result plane short of the screen edge it is anchored to.
+  right edge, which cut the plane short of the screen edge it is anchored to.
 - Browsers without CSS `hypot()` (older than about 2023) render no plane; the content is unaffected.
 
-### Consequences accepted with the plane
-- The expanded selector list carries **no background**. An opaque box cut its own rectangle out of
-  the form behind it. Nothing needed masking: the trigger is hidden while the list is open.
+### Consequences kept from the plane work
+- The expanded selector list carries **no background** (introduced in v01, where an opaque box cut a
+  rectangle out of the plane behind it). Kept here because nothing needs masking: the trigger is
+  hidden while the list is open.
 - While the list is open the **footer recedes** (progress and `Back` fade out), exactly as the
   forward action already does, so a long list can scroll without colliding with the progress row.
 - The result tint is **capped at 9%** of the risk hue: measured so even the faintest 12px text
@@ -169,7 +160,7 @@ Professional, concise, calm, and clear. Avoid alarmist cyber language or fear-ma
 ---
 
 ## Decision Status
-**Human approved:** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; centered editorial layout; the typographic selector; three-segment progress; the result showing only the user's own level; motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy; the curved plane as a restrained compositional accent — bottom-left on all three question screens, varying only by a small step of scale and tone, bottom-right on the result in the risk hue, entering the composition more — sized by distance to the content so the balance holds across aspect ratios, with content exactly centred.
+**Human approved:** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; centered editorial layout; the typographic selector; three-segment progress; the result showing only the user's own level; motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy; the curved plane as the result's reveal — no motif on the question screens, a bottom-right plane in the risk hue on the result, sized by distance to the content so the balance holds across aspect ratios (variant v02; v01 keeps a tonal plane on the questions) — with content exactly centred.
 
 *(Superseded by the simplification pass: the left-aligned two-column layout, the answer-row treatment and the three-segment risk indicator.)*
 

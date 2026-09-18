@@ -25,8 +25,8 @@ export function Result({ answers, onEdit }: ResultProps) {
   }, []);
 
   return (
-    // data-phase 3 places the plane bottom-right, in the risk hue.
-    <main className="result" data-level={result.level} data-phase="3">
+    <main className="result" data-level={result.level}>
+      {/* The plane appears only here: the reveal that comes with the answer. */}
       <Plane />
 
       <div className="stage">

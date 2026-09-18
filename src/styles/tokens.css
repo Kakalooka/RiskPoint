@@ -45,11 +45,6 @@
   --disabled-fg: #75787e;
   --focus: #f3f2ef;
 
-  /* The plane stays tonal here, just above the ground. The three steps are close
-     together on purpose: the change reads in comparison, not at first glance. */
-  --plane-tone-1: #16171a;
-  --plane-tone-2: #18191c;
-  --plane-tone-3: #1a1b1e;
 }
 
 /* Result: answer / clarity. Semantic colour appears here for the first time. */

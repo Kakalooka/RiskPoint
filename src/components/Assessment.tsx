@@ -1,7 +1,6 @@
 import { useEffect, useRef, type FormEvent } from 'react';
 import { QUESTIONS } from '../content';
 import type { Answers } from '../model/config';
-import { Plane } from './Plane';
 import { Progress } from './Progress';
 import { Selector } from './Selector';
 
@@ -34,19 +33,7 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
 
   return (
     // data-theme pins the dark tokens while the page behind transitions to light on exit.
-    // data-phase sets the plane's size and tone for the current question.
-    <form
-      className="assessment"
-      data-theme="dark"
-      data-phase={step}
-      data-leaving={leaving}
-      onSubmit={handleSubmit}
-      noValidate
-    >
-      {/* Not keyed: the plane stays mounted across questions, so between steps it only
-          changes size instead of fading out and back in. */}
-      <Plane />
-
+    <form className="assessment" data-theme="dark" data-leaving={leaving} onSubmit={handleSubmit} noValidate>
       <div className="stage" key={step}>
         <h1
           id="question-title"
