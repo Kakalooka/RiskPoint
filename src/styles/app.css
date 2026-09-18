@@ -90,34 +90,20 @@ ul {
  * The result's reveal. The questions are left empty on purpose, so the plane appears
  * for the first time with the answer, as part of the change from dark to light.
  *
- * One disc, centred on the bottom-right corner so only a quarter of it shows and its
- * straight edges are the edges of the screen, in the risk hue as a tint.
- *
- * The 9:16 composition is the reference (measured at 566×915). There the disc is
- * centred on the bottom-right corner, 283px right of and 293px below the CTA's centre,
- * with a 361px radius: the arc passes behind the right part of the CTA and the end of
- * the links row, while the range and the level word stay clear.
- *
- * Centring on the real corner made that composition drift on wider screens, because the
- * corner moves away from the centred content. So the reference circle is pinned to the
- * CTA instead (its centre is measured in Plane.tsx). The CTA and links are the same size
- * at every width, so the arc meets them exactly as in the reference. Everything right
- * of and below the arc is filled, clipped by the result, so the plane still runs to the
- * right and bottom edges: where the arc's centre is inside the screen, it continues as
- * a flat top edge and a straight left edge, both tangent to the arc. At the reference
- * size the shape is exactly the quarter disc.
+ * Always a true circle in the risk hue as a tint, cropped only by the screen edges. At the
+ * 9:16 reference it is centred on the bottom-right corner, so a quarter shows. Its centre
+ * and radius are solved in Plane.tsx: the reference circle, scaled about the point where it
+ * crosses the CTA, so the overlap with the content holds at every aspect ratio while the
+ * right and bottom edges keep cropping it. This rule only draws the circle it is given.
  */
 .plane {
-  --plane-r: 361px;
-  --plane-dx: 283px;
-  --plane-dy: 293px;
   position: absolute;
   z-index: -1;
-  left: calc(var(--anchor-x) + var(--plane-dx) - var(--plane-r));
-  top: calc(var(--anchor-y) + var(--plane-dy) - var(--plane-r));
-  width: calc(var(--plane-r) + 100vw);
-  height: calc(var(--plane-r) + 200vh);
-  border-top-left-radius: var(--plane-r);
+  left: calc(var(--plane-cx) - var(--plane-r));
+  top: calc(var(--plane-cy) - var(--plane-r));
+  width: calc(var(--plane-r) * 2);
+  height: calc(var(--plane-r) * 2);
+  border-radius: 50%;
   background: color-mix(in oklab, var(--risk-color) var(--plane-tint), var(--bg));
   pointer-events: none;
   animation: fade 640ms var(--ease-out) both;
@@ -390,7 +376,7 @@ ul {
 
 /* ---------- Result ---------- */
 
-/* Positioning context for the plane; clip keeps its oversized fill from causing scroll. */
+/* Positioning context for the plane; clip keeps the part of the circle past the edges from causing scroll. */
 .result {
   flex: 1;
   display: flex;
