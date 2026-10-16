@@ -157,6 +157,13 @@ ul {
 
 /* ---------- Assessment ---------- */
 
+/* The main landmark for Q1–Q3; it only passes the flex column through to the form. */
+.assessment-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .assessment {
   flex: 1;
   display: flex;
