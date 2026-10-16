@@ -13,7 +13,7 @@ No branches, history, original source material or deployed pages are deleted. Th
 - Candidate a11y fixes: controls obscured by the expanded listbox are inert; listbox Tab/Escape restores trigger focus; reduced-motion also suppresses the exit animation. Changes are **not** deployed.
 - Chromium E2E (`npm run test:e2e`, Playwright locked in `package-lock.json`) runs against the production build, the standalone file and, read-only, the frozen Build 1. Coverage: flow, exact results, keyboard, reduced motion, responsive layout, lead form without network traffic, axe WCAG A/AA. The fixed UI issues are guarded by regular tests.
 - Real-world validation of illustrative loss ranges before any production use.
-- Public `source/Mail.txt` includes a third party's recruitment contact details; review public exposure. Removing it from HEAD will not remove Git history.
+- `source/Mail.txt`: the third party's personal contact details (name, email, phone, office address) are redacted in the current tree; task content and deadlines are unchanged. Git history and older public branches still contain the original. Rewriting history is a separate owner decision (Issue #3) and has not been done.
 - Configure main branch protection via GitHub settings if needed.
 
 ## UI quality pass
