@@ -3,15 +3,16 @@
 ## Canonical organization
 - `main`: canonical development sources; approved release archives in `final/` (Build 1, Build 2) are immutable.
 - `claude/final-build-clean-v01`: preserved audit/approved baseline.
-- `claude/final-build-v01`: archived line of visual experiments, including the result plane; do not deploy as Build 1.
-- `gh-pages`: frozen standalone deployment, independent Git history.
+- `claude/final-build-v01`: archived line of visual experiments, including the result plane; never deploy it as a release.
+- `gh-pages`: standalone deployment of the current production release (Build 2), independent Git history; changed only through `RELEASE.md`.
+- Releases: **Build 2 — Current Production Release**; Build 1 — Deprecated / Archived (`final/RiskPoint-final.html`).
 
 ## Non-destructive cleanup
 No branches, history, original source material or deployed pages are deleted. The approved HTML blob remains `53aa58d34fff62b7c5017650ac2ec71710f300d9`.
 
 ## Open issues (separate changes, not part of structural cleanup)
 - Candidate a11y fixes: controls obscured by the expanded listbox are inert; listbox Tab/Escape restores trigger focus; reduced-motion also suppresses the exit animation. Changes are **not** deployed.
-- Chromium E2E (`npm run test:e2e`, Playwright locked in `package-lock.json`) runs against the production build, the standalone file and, read-only, the frozen Build 1. Coverage: flow, exact results, keyboard, reduced motion, responsive layout, lead form without network traffic, axe WCAG A/AA. The fixed UI issues are guarded by regular tests.
+- Chromium E2E (`npm run test:e2e`, Playwright locked in `package-lock.json`) runs against the production build, the standalone file and, read-only, the deprecated Build 1 archive, plus the full suite against the current Build 2 archive. Coverage: flow, exact results, keyboard, reduced motion, responsive layout, lead form without network traffic, axe WCAG A/AA. The fixed UI issues are guarded by regular tests.
 - Real-world validation of illustrative loss ranges before any production use.
 - `source/Mail.txt`: the third party's personal contact details (name, email, phone, office address) are redacted in the current tree; task content and deadlines are unchanged. Git history and older public branches still contain the original. Rewriting history is a separate owner decision (Issue #3) and has not been done.
 - Configure main branch protection via GitHub settings if needed.

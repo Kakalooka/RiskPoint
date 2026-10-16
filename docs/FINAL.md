@@ -1,6 +1,6 @@
 # RiskPoint — approved releases
 
-## Current release: Build 2 (published)
+## Build 2 — Current Production Release
 **Approved by the owner on 2026-10-16** as the new public demo, after PRs #4–#9 were merged.
 **Contents:** the approved Build 1 presentation (Sora only, dark Q1–Q3, light result, U+200A spacing in revenue ranges) plus the accessibility pass from PR #2 and the UI quality pass from PR #9 (N-01, N-02, N-03, N-06, RP-02; see `UI_BACKLOG.md`). No scoring, copy or flow changes.
 
@@ -17,8 +17,9 @@ QA on this exact file before approval:
 - the full Playwright and axe suite against `file://…/final/RiskPoint-build-2.html` (project `build-2`): flow, LOW / MID / HIGH, keyboard, reduced motion, responsive layout from 320 px to 1440 px and landscape, and the lead form with no network traffic;
 - screenshots at 1440, 768, 375×667, 320×568 and 667×375 are pixel-identical to the reviewed PR #9 "after" screenshots.
 
-## Archive: Build 1 (previous public release)
-**Approved presentation:** Build 1, Sora only, with U+200A optical spacing around the Q2 revenue-range en dashes.
+## Build 1 — Deprecated / Archived
+Previous public release, replaced by Build 2 on 2026-10-16. Not served; kept unchanged for audit and as the rollback target.
+**Approved presentation (still the basis of Build 2):** Build 1, Sora only, with U+200A optical spacing around the Q2 revenue-range en dashes.
 
 | | |
 |---|---|

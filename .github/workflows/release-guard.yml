@@ -1,5 +1,6 @@
 name: RiskPoint release guard
-# Read-only: checks that the published gh-pages artifact is still the approved Build 1.
+# Read-only: checks that the published gh-pages artifact is the current approved release
+# (APPROVED_BUILD in scripts/approved-release.mjs).
 # It never builds, writes, pushes or deploys anything.
 on:
   push:
@@ -21,8 +22,8 @@ jobs:
         with:
           node-version: '22'
       - run: git fetch --no-tags --depth=1 origin gh-pages
-      - name: gh-pages index.html is the approved Build 1 blob
+      - name: gh-pages index.html is the current approved release blob
         run: npm run verify:deployment
-      - name: Live page is the approved Build 1 (scheduled / manual runs only)
+      - name: Live page is the current approved release (scheduled / manual runs only)
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: npm run verify:deployment -- --live
