@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type RefObject } from 'react';
 
 export interface SelectorOption<Id extends string = string> {
   id: Id;
@@ -12,7 +12,14 @@ interface SelectorProps<Id extends string> {
   labelledBy: string;
   onChange: (id: Id) => void;
   onOpenChange: (open: boolean) => void;
+  /** Element the open list must stay above (the assessment footer). */
+  boundaryRef?: RefObject<HTMLElement | null>;
 }
+
+/** Space kept between the open list and the boundary below it. */
+const LIST_GAP = 8;
+/** The list never shrinks below roughly two options, even on very short screens. */
+const LIST_MIN = 96;
 
 /**
  * Typographic listbox: a single line of text that opens its options in place.
@@ -26,18 +33,43 @@ export function Selector<Id extends string>({
   labelledBy,
   onChange,
   onOpenChange,
+  boundaryRef,
 }: SelectorProps<Id>) {
   const listId = useId();
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   const optionRefs = useRef<(HTMLLIElement | null)[]>([]);
   const typed = useRef({ text: '', at: 0 });
   const restoreFocus = useRef(false);
 
   const selectedIndex = options.findIndex((option) => option.id === value);
   const selected = selectedIndex >= 0 ? options[selectedIndex] : undefined;
+
+  // Short viewports: keep the open list above the footer and mark the edges where it scrolls.
+  useLayoutEffect(() => {
+    if (!open) return;
+    const fit = () => {
+      const list = listRef.current;
+      if (!list) return;
+      const limit = Math.min(boundaryRef?.current?.getBoundingClientRect().top ?? Infinity, window.innerHeight);
+      const free = limit - list.getBoundingClientRect().top - LIST_GAP;
+      // Same caps as the stylesheet: min(52vh, 420px).
+      let space = Math.max(LIST_MIN, Math.min(free, window.innerHeight * 0.52, 420));
+      const optionHeight = list.firstElementChild?.getBoundingClientRect().height ?? 0;
+      if (optionHeight > 0 && list.scrollHeight > space) {
+        // End halfway through an option, so a partly visible, faded option shows there is more.
+        space = Math.max(optionHeight * 1.5, (Math.floor(space / optionHeight - 0.5) + 0.5) * optionHeight);
+      }
+      list.style.setProperty('--list-space', `${Math.floor(space)}px`);
+      markScrollEdges(list);
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    return () => window.removeEventListener('resize', fit);
+  }, [open, boundaryRef]);
 
   useEffect(() => {
     if (open) optionRefs.current[activeIndex]?.focus();
@@ -153,7 +185,15 @@ export function Selector<Id extends string>({
       </button>
 
       {open && (
-        <ul className="selector__list" id={listId} role="listbox" aria-labelledby={labelledBy} onKeyDown={handleListKeyDown}>
+        <ul
+          ref={listRef}
+          className="selector__list"
+          id={listId}
+          role="listbox"
+          aria-labelledby={labelledBy}
+          onKeyDown={handleListKeyDown}
+          onScroll={(event) => markScrollEdges(event.currentTarget)}
+        >
           {options.map((option, index) => (
             <li
               key={option.id}
@@ -175,4 +215,11 @@ export function Selector<Id extends string>({
       )}
     </div>
   );
+}
+
+/** Flags the edges with more options beyond them; CSS fades only those edges. */
+function markScrollEdges(list: HTMLElement) {
+  const overflows = list.scrollHeight - list.clientHeight > 1;
+  list.dataset.moreAbove = String(overflows && list.scrollTop > 1);
+  list.dataset.moreBelow = String(overflows && list.scrollTop + list.clientHeight < list.scrollHeight - 1);
 }

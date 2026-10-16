@@ -253,11 +253,36 @@ ul {
   transform: translateX(-50%);
   z-index: 2;
   width: min(100%, 460px);
-  max-height: min(52vh, 420px);
+  /* --list-space is set while open so the list stays above the footer on short screens. */
+  max-height: min(52vh, 420px, var(--list-space, 420px));
   overflow-y: auto;
   overscroll-behavior: contain;
+  scroll-padding-block: var(--list-fade);
   background: var(--bg);
   animation: reveal-list 220ms var(--ease-out) both;
+  --list-fade: 36px;
+}
+
+/* When the list scrolls, the edge with more options fades out as the only scroll cue. */
+.selector__list[data-more-below='true'] {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--list-fade)), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - var(--list-fade)), transparent);
+}
+
+.selector__list[data-more-above='true'] {
+  -webkit-mask-image: linear-gradient(to top, #000 calc(100% - var(--list-fade)), transparent);
+  mask-image: linear-gradient(to top, #000 calc(100% - var(--list-fade)), transparent);
+}
+
+.selector__list[data-more-above='true'][data-more-below='true'] {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 var(--list-fade),
+    #000 calc(100% - var(--list-fade)),
+    transparent
+  );
+  mask-image: linear-gradient(to bottom, transparent, #000 var(--list-fade), #000 calc(100% - var(--list-fade)), transparent);
 }
 
 .selector__option {

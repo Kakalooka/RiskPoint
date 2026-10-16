@@ -21,6 +21,7 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
   const value = draft[question.key];
   const isLast = step === QUESTIONS.length - 1;
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const footerRef = useRef<HTMLElement>(null);
   const [selectorOpen, setSelectorOpen] = useState(false);
 
   useEffect(() => {
@@ -54,6 +55,7 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
             labelledBy="question-title"
             onChange={(id) => onAnswer(withAnswer(draft, question.key, id))}
             onOpenChange={setSelectorOpen}
+            boundaryRef={footerRef}
           />
   
           <div className="stage__action" inert={selectorOpen}>
@@ -63,7 +65,7 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
           </div>
         </div>
   
-        <footer className="assessment__footer" inert={selectorOpen}>
+        <footer className="assessment__footer" ref={footerRef} inert={selectorOpen}>
           {step > 0 && (
             <button type="button" className="text-button assessment__back" onClick={onBack}>
               Back
