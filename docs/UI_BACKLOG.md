@@ -1,6 +1,6 @@
 # RiskPoint — UI and accessibility issues from the 2026-10-16 audit
 
-**Status (UI quality pass, approved by the owner on 2026-10-16):** N-01, N-02, N-03, N-06 and RP-02 are **FIXED in the `main` sources** (branch `fix/ui-quality-pass-v001`). The published, frozen Build 1 (`final/RiskPoint-final.html`, `gh-pages`) still contains them until a new release is approved and deployed (see `RELEASE.md`). The evidence below describes the state before the fix; each item ends with the resolution and the regression test that now guards it.
+**Status (UI quality pass, approved by the owner on 2026-10-16):** N-01, N-02, N-03, N-06 and RP-02 are **FIXED** in the sources and **published in Build 2** (`final/RiskPoint-build-2.html`, see `FINAL.md`). The archived Build 1 still contains them. The evidence below describes the state before the fix; each item ends with the resolution and the regression test that now guards it.
 
 This file records evidence and acceptance criteria only. Product, UX and design decisions remain in `PRODUCT.md`, `UX_RESEARCH.md`, `DESIGN.md` and `SPEC.md`.
 

@@ -1,19 +1,19 @@
 # RiskPoint — release procedure
 
-This document says how a future release replaces the published page and how to verify what is deployed. It does **not** authorize a release. The approved, published artifact is Build 1 (`docs/FINAL.md`). It stays frozen until a human explicitly approves a successor.
+This document says how a future release replaces the published page and how to verify what is deployed. It does **not** authorize a release. The approved, published artifact is **Build 2** (`docs/FINAL.md`); Build 1 is archived. The published artifact stays fixed until a human explicitly approves a successor.
 
 ## Two kinds of checks
 | What | Command | Where | Meaning |
 |---|---|---|---|
-| Frozen Build 1 file on `main` | `npm run verify:baseline` | CI (`ci.yml`) | `final/RiskPoint-final.html` is still the approved blob `53aa58d…`. |
+| Approved archives on `main` | `npm run verify:baseline` | CI (`ci.yml`) | Every file in `final/` listed in `scripts/approved-release.mjs` (Build 1 `53aa58d…`, Build 2 `d2501a5…`) is unchanged. |
 | Published deployment (Git) | `npm run verify:deployment` | CI (`release-guard.yml`) on every push/PR to `main` and weekly | `gh-pages:index.html` is still the approved blob. Read-only; requires `git fetch --depth=1 origin gh-pages`. |
 | Published deployment (live) | `npm run verify:deployment -- --live` | `release-guard.yml` on schedule and manual dispatch | The page served at `https://kakalooka.github.io/RiskPoint/` is byte-identical to the approved blob. |
 | Candidate sources | `npm test`, `npm run build:all`, `npm run test:e2e` | CI (`ci.yml`, `e2e.yml`) | The **current sources** work. This says nothing about what is deployed. |
-| Identical rebuild of the approved file | `npm run verify:release` | Manual | Fails on `main` by design while the sources differ from Build 1 (for example after the accessibility pass). Never "fix" it by replacing the approved file. |
+| Identical rebuild of the approved file | `npm run verify:release` | Manual | A fresh `dist/RiskPoint.html` is byte-identical to the current approved release. Fails by design once the sources move on. Never "fix" it by replacing an approved file. |
 
-A green CI run on `main` therefore means "the candidate sources pass" and "the published Build 1 is untouched". It never means the live demo contains the latest source changes.
+A green CI run on `main` therefore means "the candidate sources pass" and "the approved archives and the published page are untouched". It never means the live demo contains the latest source changes.
 
-## Releasing a successor (e.g. Build 2)
+## Releasing a successor (e.g. Build 3)
 Every step needs a human. No workflow deploys anything.
 
 1. **Candidate.** Merge the intended source changes into `main` through reviewed PRs. CI and E2E must be green, and so must `verify:baseline` and `verify:deployment`, because Build 1 is still the published artifact at this point.
@@ -41,7 +41,7 @@ Every step needs a human. No workflow deploys anything.
    - Both checks must report the newly approved blob.
 
 ## Rollback
-Restore the previous approved bytes on `gh-pages` in a new commit (no history rewrite). Point `APPROVED_BUILD` back to the restored blob in a PR to `main`, then rerun step 7.
+Restore the previous approved bytes on `gh-pages` in a new commit, with no history rewrite. For Build 2 → Build 1: `git show origin/main:final/RiskPoint-final.html > index.html` on a `gh-pages` checkout, commit and push. Then point `APPROVED_BUILD` in `scripts/approved-release.mjs` back to the Build 1 entry in a PR to `main`, and rerun step 7. The archives in `final/` are never deleted, so every approved build stays restorable.
 
 ## Repository settings (owner decision)
 These cannot be set from the repository files:

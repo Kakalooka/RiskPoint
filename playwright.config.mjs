@@ -3,6 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 const PORT = 4173;
 const STANDALONE = new URL('./dist/RiskPoint.html', import.meta.url);
 const FROZEN_BUILD_1 = new URL('./final/RiskPoint-final.html', import.meta.url);
+const BUILD_2 = new URL('./final/RiskPoint-build-2.html', import.meta.url);
 
 /**
  * Browser tests run against the production build, not the dev server:
@@ -12,6 +13,8 @@ const FROZEN_BUILD_1 = new URL('./final/RiskPoint-final.html', import.meta.url);
  * - "frozen-build-1": a read-only smoke test of the approved, published Build 1
  *   (`final/RiskPoint-final.html`). It intentionally differs from `main` and is
  *   never rebuilt or modified; only the shared artifact smoke spec runs against it.
+ * - "build-2": the full suite against the approved Build 2 archive
+ *   (`final/RiskPoint-build-2.html`), the exact bytes published on gh-pages.
  * The web server command builds the web and standalone outputs before serving.
  */
 export default defineConfig({
@@ -39,6 +42,10 @@ export default defineConfig({
       name: 'frozen-build-1',
       testMatch: /artifact\.spec\.mjs/,
       metadata: { entry: FROZEN_BUILD_1.href },
+    },
+    {
+      name: 'build-2',
+      metadata: { entry: BUILD_2.href },
     },
   ],
   webServer: {

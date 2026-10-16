@@ -18,7 +18,7 @@ When a decision in docs/ differs from the original recruitment brief, do not ass
 - **UX decisions, research, user insights**: Read [`docs/UX_RESEARCH.md`](docs/UX_RESEARCH.md)
 - **Design, visual direction, components**: Read [`docs/DESIGN.md`](docs/DESIGN.md)
 - **Implementation, specs, interactions**: Read [`docs/SPEC.md`](docs/SPEC.md)
-- **Approved release, frozen Build 1 and release procedure (release/deployment authority)**: Read [`docs/FINAL.md`](docs/FINAL.md)
+- **Approved releases (published Build 2, archived Build 1) and release procedure (release/deployment authority)**: Read [`docs/FINAL.md`](docs/FINAL.md)
 - **Branch roles, open issues, release invariants**: Read [`docs/REPOSITORY_STATE.md`](docs/REPOSITORY_STATE.md)
 - **Known UI / accessibility issues, their status and regression tests**: Read [`docs/UI_BACKLOG.md`](docs/UI_BACKLOG.md)
 
@@ -36,7 +36,7 @@ Do not duplicate content across files. Reference the appropriate file instead.
 - Build only what is needed for the current task
 - Do not add abstractions, refactor, or prepare for hypothetical future work
 - The project is in the maintenance phase: app code, tests, CI and build tooling exist. Do not add or change dependencies, CI, tests or build infrastructure unless the current task needs it.
-- Never modify `final/RiskPoint-final.html` or the `gh-pages` branch, and never treat intentional differences between `main` and the frozen Build 1 as defects (see `docs/FINAL.md`).
+- Never modify the approved archives in `final/` or the `gh-pages` branch outside an approved release (`docs/RELEASE.md`), and never treat intentional differences between `main` and the published release as defects (see `docs/FINAL.md`).
 - Do not change UI, copy, scoring or interaction behavior without an explicit human decision. Record known issues in `docs/UI_BACKLOG.md` instead.
 
 ### 3. Testing and Verification Required
