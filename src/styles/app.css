@@ -462,7 +462,7 @@ ul {
   color: var(--fg);
   background: transparent;
   border: 0;
-  border-bottom: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--field-line);
   border-radius: 0;
 }
 

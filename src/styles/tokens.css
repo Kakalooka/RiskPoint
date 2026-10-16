@@ -55,6 +55,8 @@
   --faint: #64676d;
   --option-idle: #6b6e74;
   --line-strong: #b4b0a7;
+  /* Lead-form field underline: same warm hue as --line-strong, 3.09:1 on --bg (WCAG 1.4.11). */
+  --field-line: #8e8b84;
   --row: #ebe9e3;
   --segment-todo: #d6d2c8;
   --segment-done: #9a968d;

@@ -43,3 +43,16 @@ export const LEVEL_CASES = [
   { answers: { industry: 'Technology', revenue: 'Under €5M', mfa: 'No' }, level: 'MID', range: '€20k–€120k' },
   { answers: { industry: 'Healthcare', revenue: '€300M+', mfa: 'No' }, level: 'HIGH', range: '€300k–€1.5M' },
 ];
+
+/** WCAG contrast ratio between two computed `rgb(...)` colours. */
+export function contrast(a, b) {
+  const lum = (rgb) => {
+    const [r, g, bl] = rgb.match(/\d+(\.\d+)?/g).slice(0, 3).map((v) => {
+      const c = Number(v) / 255;
+      return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * bl;
+  };
+  const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
