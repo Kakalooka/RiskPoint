@@ -1,0 +1,28 @@
+name: RiskPoint release guard
+# Read-only: checks that the published gh-pages artifact is still the approved Build 1.
+# It never builds, writes, pushes or deploys anything.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+      - run: git fetch --no-tags --depth=1 origin gh-pages
+      - name: gh-pages index.html is the approved Build 1 blob
+        run: npm run verify:deployment
+      - name: Live page is the approved Build 1 (scheduled / manual runs only)
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: npm run verify:deployment -- --live

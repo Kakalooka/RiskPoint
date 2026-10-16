@@ -14,4 +14,6 @@
 
 CI always runs `npm run verify:baseline`, which guards the exact approved HTML blob independently of the evolving sources. For a proposed replacement release, run `npm ci`, `npm test`, `npm run build:all`, browser tests and `npm run verify:release`; the latter demands byte-for-byte identity with this frozen HTML when claiming an identical rebuild. If it differs, do not deploy or replace the approved artifact without explicit human approval of a new release.
 
+The *RiskPoint release guard* workflow runs `npm run verify:deployment`, a read-only check that `gh-pages:index.html` is still this blob, plus a weekly and on-demand check of the live page. The full candidate → QA → approval → versioned artifact → deployment → verification procedure is in [`RELEASE.md`](RELEASE.md).
+
 The scoring is a prototype heuristic, not actuarial underwriting. Lead capture remains demo-only.

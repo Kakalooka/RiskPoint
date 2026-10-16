@@ -17,4 +17,4 @@ No branches, history, original source material or deployed pages are deleted. Th
 - Configure main branch protection via GitHub settings if needed.
 
 ## Release invariants
-Never update `gh-pages` automatically in this cleanup. `verify:baseline` guards the immutable Build 1 artifact; candidate sources may differ. New public releases require explicit human approval, review of browser tests and deliberate publication.
+Never update `gh-pages` automatically. `verify:baseline` guards the immutable Build 1 file on `main`, and `verify:deployment` (read-only, *RiskPoint release guard* workflow) checks that `gh-pages:index.html`, and on scheduled/manual runs the live page, are still that blob. Candidate sources may differ. Procedure: [`RELEASE.md`](RELEASE.md). New public releases require explicit human approval, review of browser tests and deliberate publication.
