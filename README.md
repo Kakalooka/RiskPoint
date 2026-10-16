@@ -45,6 +45,6 @@ The source tree may evolve while the approved Build 1 HTML and `gh-pages` remain
 - [`docs/SPEC.md`](docs/SPEC.md) — current flow, model, UI and acceptance criteria.
 - [`docs/FINAL.md`](docs/FINAL.md) — frozen approved release and verification.
 - [`CLAUDE.md`](CLAUDE.md) — task-oriented documentation routing.
-- [`source/`](source/) — original recruitment materials, preserved; contact-data exposure needs separate review.
+- [`source/`](source/) — original recruitment materials; the sender's personal contact details in `Mail.txt` are redacted in the current tree (earlier commits still contain them).
 
 The assessment is a recruitment demonstration, not an insurer-approved cyber-risk or financial-loss forecast.
