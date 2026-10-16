@@ -1,4 +1,4 @@
-import { useEffect, useRef, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { QUESTIONS } from '../content';
 import type { Answers } from '../model/config';
 import { Progress } from './Progress';
@@ -21,6 +21,7 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
   const value = draft[question.key];
   const isLast = step === QUESTIONS.length - 1;
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const [selectorOpen, setSelectorOpen] = useState(false);
 
   useEffect(() => {
     if (focusOnMount) titleRef.current?.focus({ preventScroll: true });
@@ -33,7 +34,7 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
 
   return (
     // data-theme pins the dark tokens while the page behind transitions to light on exit.
-    <form className="assessment" data-theme="dark" data-leaving={leaving} onSubmit={handleSubmit} noValidate>
+    <form className="assessment" data-theme="dark" data-leaving={leaving} data-selector-open={selectorOpen} inert={leaving} onSubmit={handleSubmit} noValidate>
       <div className="stage" key={step}>
         <h1
           id="question-title"
@@ -51,16 +52,17 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
           value={value}
           labelledBy="question-title"
           onChange={(id) => onAnswer({ ...draft, [question.key]: id })}
+          onOpenChange={setSelectorOpen}
         />
 
-        <div className="stage__action">
+        <div className="stage__action" inert={selectorOpen}>
           <button type="submit" className="button button--primary" disabled={!value}>
             {isLast ? 'See my risk' : 'Continue'}
           </button>
         </div>
       </div>
 
-      <footer className="assessment__footer">
+      <footer className="assessment__footer" inert={selectorOpen}>
         {step > 0 && (
           <button type="button" className="text-button assessment__back" onClick={onBack}>
             Back

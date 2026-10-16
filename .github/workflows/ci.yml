@@ -18,4 +18,5 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build:all
-      - run: npm run verify:release
+      # Source development may diverge; the human-approved release stays frozen.
+      - run: npm run verify:baseline

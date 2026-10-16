@@ -11,14 +11,15 @@ interface SelectorProps {
   value: string | undefined;
   labelledBy: string;
   onChange: (id: string) => void;
+  onOpenChange: (open: boolean) => void;
 }
 
 /**
  * Typographic listbox: a single line of text that opens its options in place.
  * Keyboard: Enter/Space/Arrows open, Arrows/Home/End move, Enter/Space select,
- * Escape closes, plain characters jump to a matching option.
+ * Escape and Tab close to the trigger; plain characters jump to a matching option.
  */
-export function Selector({ placeholder, options, value, labelledBy, onChange }: SelectorProps) {
+export function Selector({ placeholder, options, value, labelledBy, onChange, onOpenChange }: SelectorProps) {
   const listId = useId();
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -46,7 +47,7 @@ export function Selector({ placeholder, options, value, labelledBy, onChange }: 
   useEffect(() => {
     if (!open) return;
     const onPointerDown = (event: PointerEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+      if (!rootRef.current?.contains(event.target as Node)) closeList(false);
     };
     document.addEventListener('pointerdown', onPointerDown);
     return () => document.removeEventListener('pointerdown', onPointerDown);
@@ -55,11 +56,13 @@ export function Selector({ placeholder, options, value, labelledBy, onChange }: 
   function openList() {
     setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0);
     setOpen(true);
+    onOpenChange(true);
   }
 
-  function closeList() {
-    restoreFocus.current = true;
+  function closeList(restore = true) {
+    restoreFocus.current = restore;
     setOpen(false);
+    onOpenChange(false);
   }
 
   function select(index: number) {
@@ -111,7 +114,9 @@ export function Selector({ placeholder, options, value, labelledBy, onChange }: 
         closeList();
         break;
       case 'Tab':
-        setOpen(false);
+        // Return focus to the visible trigger; the following Tab advances normally.
+        event.preventDefault();
+        closeList();
         break;
       default:
         if (event.key.length === 1 && event.key.trim()) jumpToTyped(event.key);
