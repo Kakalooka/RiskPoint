@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { QUESTIONS } from '../content';
-import type { Answers } from '../model/config';
+import { withAnswer, type Draft } from './draft';
 import { Progress } from './Progress';
 import { Selector } from './Selector';
 
-export type Draft = Partial<Answers>;
+export type { Draft };
 
 interface AssessmentProps {
   step: number;
@@ -51,7 +51,7 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
           options={question.options}
           value={value}
           labelledBy="question-title"
-          onChange={(id) => onAnswer({ ...draft, [question.key]: id })}
+          onChange={(id) => onAnswer(withAnswer(draft, question.key, id))}
           onOpenChange={setSelectorOpen}
         />
 

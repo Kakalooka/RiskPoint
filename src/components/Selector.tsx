@@ -1,16 +1,16 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from 'react';
 
-export interface SelectorOption {
-  id: string;
+export interface SelectorOption<Id extends string = string> {
+  id: Id;
   label: string;
 }
 
-interface SelectorProps {
+interface SelectorProps<Id extends string> {
   placeholder: string;
-  options: readonly SelectorOption[];
-  value: string | undefined;
+  options: readonly SelectorOption<Id>[];
+  value: Id | undefined;
   labelledBy: string;
-  onChange: (id: string) => void;
+  onChange: (id: Id) => void;
   onOpenChange: (open: boolean) => void;
 }
 
@@ -19,7 +19,14 @@ interface SelectorProps {
  * Keyboard: Enter/Space/Arrows open, Arrows/Home/End move, Enter/Space select,
  * Escape and Tab close to the trigger; plain characters jump to a matching option.
  */
-export function Selector({ placeholder, options, value, labelledBy, onChange, onOpenChange }: SelectorProps) {
+export function Selector<Id extends string>({
+  placeholder,
+  options,
+  value,
+  labelledBy,
+  onChange,
+  onOpenChange,
+}: SelectorProps<Id>) {
   const listId = useId();
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
