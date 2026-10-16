@@ -17,6 +17,8 @@ Three deliberate steps: **Industry → Annual revenue → MFA coverage → LOW /
 
 Requires **Node.js 22.12+ on the 22.x line, Node 24.x or Node 26+** (per locked Vitest engines) and npm.
 
+`.nvmrc` pins the primary line (22); CI runs unit tests and builds on Node 22 and 24. `npm audit` still reports `braces` (via `micromatch` in the build-only `vite-plugin-singlefile`): a build-time denial-of-service advisory with no non-breaking fix, and the shipped HTML is unaffected. Production dependencies report 0 vulnerabilities.
+
 ```bash
 npm ci
 npm run dev
