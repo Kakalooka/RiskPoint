@@ -76,7 +76,7 @@ Motion communicates real state change, not artificial waiting time. *(Human-appr
 - The result is already calculated; animation is presentation only. The CTA stays usable.
 - No `Calculating…`, "Analyzing with AI…", typing dots, spinner, fake progress or count-up loss animation.
 - `prefers-reduced-motion`: no translation-heavy sequence, no indicator travel; short opacity/theme transition only.
-  - *Implementation status (not a new decision):* the approved Build 1 HTML uses a short 0.2 s opacity fade. The unreleased `main` sources (accessibility pass) go further and remove the stage, exit, reveal and theme transitions entirely. Both stay within this rule. Whether a future release should restore the short fade is **open** and needs a human decision.
+  - *Implementation status (not a new decision):* the deprecated Build 1 HTML used a short 0.2 s opacity fade. The current release, Build 2, goes further and removes the stage, exit, reveal and theme transitions entirely. Both stay within this rule. Whether a future release should restore the short fade is **open** and needs a human decision.
 
 Exact durations and easing: first-build values in code (pending human review).
 
@@ -103,7 +103,7 @@ Professional, concise, calm, and clear. Avoid alarmist cyber language or fear-ma
 ---
 
 ## Decision Status
-**Human approved (current, approved Build 1):** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; centered, editorial single-column layout; typographic selector that reveals its options in place; three-segment progress; the user's own LOW / MID / HIGH level with a minimal accent rule (no scale or indicator); motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy.
+**Human approved (current; presentation approved for Build 1 and carried into the current release, Build 2):** Sora only; dark Q1–Q3; light result; dark → light as the semantic assessment → answer transition; almost monochromatic assessment with semantic color first on the result; centered, editorial single-column layout; typographic selector that reveals its options in place; three-segment progress; the user's own LOW / MID / HIGH level with a minimal accent rule (no scale or indicator); motion sequence and reduced-motion behavior; the avoid-list above; Revolut as inspiration rather than a UI to copy.
 
 **SUPERSEDED (first build; replaced by the human-approved simplification pass, see `UX_RESEARCH.md` → Simplification pass):** left-aligned editorial layout; answer-row treatment; three-segment LOW | MID | HIGH risk indicator. Kept for decision history only; do not rebuild them.
 

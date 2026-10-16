@@ -2,7 +2,12 @@
 
 **Interactive B2B cyber-risk calculator prototype**, created for the 180HEARTBEATS AI Prototype Builder task.
 
-**[Live demo](https://kakalooka.github.io/RiskPoint/)** · [Published HTML (Build 2)](final/RiskPoint-build-2.html) · [Release status](docs/FINAL.md) · [Repository state](docs/REPOSITORY_STATE.md)
+**[Live demo](https://kakalooka.github.io/RiskPoint/)** · [Current release HTML (Build 2)](final/RiskPoint-build-2.html) · [Release status](docs/FINAL.md) · [Repository state](docs/REPOSITORY_STATE.md)
+
+| Release | Status | Archive |
+|---|---|---|
+| **Build 2** | **Current Production Release** (live demo) | [`final/RiskPoint-build-2.html`](final/RiskPoint-build-2.html) |
+| Build 1 | Deprecated / Archived (audit and rollback only) | [`final/RiskPoint-final.html`](final/RiskPoint-final.html) |
 
 Three deliberate steps: **Industry → Annual revenue → MFA coverage → LOW / MID / HIGH result**. A separately computed illustrative financial-impact range and a protection-oriented CTA follow. No registration is required to see a result. There is no backend and the lead form does not submit real data.
 
@@ -43,14 +48,14 @@ npm run test:e2e
 `test:e2e` builds `dist/` and runs four Playwright projects:
 - **`preview`** tests the production web build through `vite preview`: flow, exact LOW / MID / HIGH results, navigation, keyboard, reduced motion, responsive layout from 320 px to 1440 px, the prototype lead form with no network traffic, and axe WCAG A/AA checks.
 - **`standalone`** tests `dist/RiskPoint.html` opened from disk.
-- **`frozen-build-1`** is a read-only smoke test of the approved `final/RiskPoint-final.html`.
+- **`frozen-build-1`** is a read-only smoke test of the deprecated, archived Build 1 (`final/RiskPoint-final.html`).
 - **`build-2`** runs the full suite against the published Build 2 archive `final/RiskPoint-build-2.html`.
 
 The UI issues found in the 2026-10-16 audit are fixed and published in Build 2; regular tests guard them (see [`docs/UI_BACKLOG.md`](docs/UI_BACKLOG.md)). The `build-2` Playwright project runs the full suite against the published file.
 
 ## Branch roles
 - **`main`**: canonical development sources; the approved release archives in `final/` are immutable.
-- **`claude/final-build-clean-v01`**: preserved approval baseline for Build 1.
+- **`claude/final-build-clean-v01`**: preserved approval baseline for Build 1 (Deprecated / Archived).
 - **`claude/final-build-v01`**: experimental visual branch (includes a plane absent from the approved presentation); retain for historical reference, not production.
 - **`gh-pages`**: independent deployment branch containing only the public HTML file.
 
@@ -59,7 +64,7 @@ The UI issues found in the 2026-10-16 audit are fixed and published in Build 2; 
 - [`docs/UX_RESEARCH.md`](docs/UX_RESEARCH.md) — research, hypotheses, decisions and superseded concepts.
 - [`docs/DESIGN.md`](docs/DESIGN.md) — approved visual system.
 - [`docs/SPEC.md`](docs/SPEC.md) — current flow, model, UI and acceptance criteria.
-- [`docs/FINAL.md`](docs/FINAL.md) — frozen approved release and verification.
+- [`docs/FINAL.md`](docs/FINAL.md) — release status (Build 2 current, Build 1 deprecated / archived) and verification.
 - [`CLAUDE.md`](CLAUDE.md) — task-oriented documentation routing.
 - [`source/`](source/) — original recruitment materials; the sender's personal contact details in `Mail.txt` are redacted in the current tree (earlier commits still contain them).
 

@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { APPROVED_BUILD, gitBlobSha } from './approved-release.mjs';
 
 /**
- * Read-only check that the deployment matches the approved Build 1.
+ * Read-only check that the deployment matches the current approved release (APPROVED_BUILD).
  *
  *   node scripts/verify-deployment.mjs [--ref <git ref>] [--live [url]]
  *
