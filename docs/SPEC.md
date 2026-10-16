@@ -213,7 +213,7 @@ Minimum requirement: the complete assessment and result must remain usable on co
 
 ## Accessibility
 Target sensible **WCAG 2.2 AA** behavior for the prototype:
-- the selector implements the listbox pattern: it opens with Enter, Space or the arrow keys, moves with arrows, Home and End, selects with Enter or Space, closes with Escape, supports character typeahead, and returns focus to the selector when it closes;
+- the selector implements the listbox pattern: it opens with Enter, Space or the arrow keys, moves with arrows, Home and End, selects with Enter or Space, closes with Escape, supports character typeahead, and returns focus to the selector when it closes; Tab / Shift+Tab close the open list without changing the answer and move focus to the next / previous control (owner decision 2026-10-16, see `UI_BACKLOG.md` RP-02);
 - keyboard operability;
 - visible focus state;
 - sufficient contrast;

@@ -20,7 +20,7 @@ When a decision in docs/ differs from the original recruitment brief, do not ass
 - **Implementation, specs, interactions**: Read [`docs/SPEC.md`](docs/SPEC.md)
 - **Approved release, frozen Build 1 and release procedure (release/deployment authority)**: Read [`docs/FINAL.md`](docs/FINAL.md)
 - **Branch roles, open issues, release invariants**: Read [`docs/REPOSITORY_STATE.md`](docs/REPOSITORY_STATE.md)
-- **Known UI / accessibility issues deferred to a separate, human-approved stage**: Read [`docs/UI_BACKLOG.md`](docs/UI_BACKLOG.md)
+- **Known UI / accessibility issues, their status and regression tests**: Read [`docs/UI_BACKLOG.md`](docs/UI_BACKLOG.md)
 
 Do not duplicate content across files. Reference the appropriate file instead.
 
