@@ -65,7 +65,7 @@ The original brief is in `source/Zadanie_180hb.txt`. These deliberate deviations
 | Brief | Project decision | Rationale |
 |---|---|---|
 | Example questions: industry, number of employees, remote work | Industry, annual revenue, MFA coverage | Revenue maps more directly to financial exposure; MFA is a concrete security control. The brief's questions were given as examples ("np."). |
-| "Estimated amount of potential losses" | Illustrative range, labelled as not an insurance quote | A single number would imply unsupported precision. |
+| "Estimated amount of potential losses" | Illustrative range, labelled "Illustrative estimate."; the method disclosure says "A prototype heuristic, not underwriting." (approved Build 1 copy, see `SPEC.md`) | A single number would imply unsupported precision. Whether production needs a visible "not an insurance quote" disclaimer remains open. |
 | Button "Zabezpiecz się" ("Protect yourself") | "See protection options" | Lower-commitment, protection-oriented wording that avoids fear framing. |
 | "Microanimations while calculating the result" | Result transition (dark → light, restrained reveal) with no calculating state | A fake calculation delay would misrepresent a deterministic lookup. |
 | UI example stack "Tailwind, shadcn/ui" | Vite + React + TypeScript with plain CSS | The brief lists these as examples ("np."); plain CSS keeps the prototype small and avoids generic component-kit styling. |

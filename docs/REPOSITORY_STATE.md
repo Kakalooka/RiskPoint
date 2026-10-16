@@ -16,5 +16,8 @@ No branches, history, original source material or deployed pages are deleted. Th
 - Public `source/Mail.txt` includes a third party's recruitment contact details; review public exposure. Removing it from HEAD will not remove Git history.
 - Configure main branch protection via GitHub settings if needed.
 
+## Deferred UI work
+Known UI and accessibility issues found in the 2026-10-16 audit (open-list overlap on short viewports, field contrast, missing `main` landmark, selector typing, Tab behavior) are recorded in [`UI_BACKLOG.md`](UI_BACKLOG.md). They are deferred: no UI change without an explicit human decision.
+
 ## Release invariants
 Never update `gh-pages` automatically in this cleanup. `verify:baseline` guards the immutable Build 1 artifact; candidate sources may differ. New public releases require explicit human approval, review of browser tests and deliberate publication.

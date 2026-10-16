@@ -98,6 +98,8 @@ Current discovery focuses on:
 
 **HUMAN DECISION:** Show an **illustrative range**, not an exact expected-loss figure. Include language making clear that the output is not an insurance quote.
 
+**SUPERSEDED IN PART (approved Build 1 copy, see `SPEC.md` → Loss Estimation Logic):** the visible note is "Illustrative estimate."; the extended "not an insurance quote" sentence is not rendered, and the optional method disclosure says "A prototype heuristic, not underwriting." **OPEN:** whether a production deployment needs a visible "not an insurance quote" disclaimer (product / legal decision).
+
 **IMPORTANT:** The v0.1 ranges are human-approved **prototype illustrative ranges**, not validated estimates. Production use would require validation by cyber/underwriting/actuarial experts.
 
 ### Calculation feedback
@@ -108,7 +110,9 @@ Current discovery focuses on:
 ### Result hierarchy and agency
 **HYPOTHESIS:** A result that moves from risk → understanding → agency → protection is more credible and less manipulative than one that moves from fear → money → buy.
 
-**HUMAN DECISION (first build):** The risk level is the hero; financial impact is clearly secondary and separate. The result includes an answer recap with Edit and an MFA counterfactual computed with the same scoring function. Hierarchy and copy rules: see `SPEC.md` → Result.
+**HUMAN DECISION (first build):** The risk level is the hero; financial impact is clearly secondary and separate. The MFA counterfactual is computed with the same scoring function. Hierarchy and copy rules: see `SPEC.md` → Result.
+
+**SUPERSEDED (first build, replaced by the simplification pass below):** the result showed an inline answer recap with Edit and a visible MFA agency message. The approved Build 1 has no recap: a subtle **Edit answers** link remains, and the MFA counterfactual is inside the "How is this calculated?" disclosure.
 
 ### Simplification pass
 **FINDING (human review of the first build):** The first build was technically sound but visually text-heavy and close to a generic SaaS form. Showing all options before interaction, plus explanation, recap, agency and methodology blocks, made each screen dense.
