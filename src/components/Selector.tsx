@@ -16,6 +16,9 @@ interface SelectorProps<Id extends string> {
   boundaryRef?: RefObject<HTMLElement | null>;
 }
 
+/** Where focus goes after the list closes. */
+type FocusAfterClose = 'trigger' | 'next' | 'previous' | null;
+
 /** Space kept between the open list and the boundary below it. */
 const LIST_GAP = 8;
 /** The list never shrinks below roughly two options, even on very short screens. */
@@ -24,7 +27,9 @@ const LIST_MIN = 96;
 /**
  * Typographic listbox: a single line of text that opens its options in place.
  * Keyboard: Enter/Space/Arrows open, Arrows/Home/End move, Enter/Space select,
- * Escape and Tab close to the trigger; plain characters jump to a matching option.
+ * Escape closes to the trigger; plain characters jump to a matching option.
+ * Tab / Shift+Tab close the list without changing the answer and move focus to the
+ * next / previous control, as if the list were not open.
  */
 export function Selector<Id extends string>({
   placeholder,
@@ -43,7 +48,7 @@ export function Selector<Id extends string>({
   const listRef = useRef<HTMLUListElement>(null);
   const optionRefs = useRef<(HTMLLIElement | null)[]>([]);
   const typed = useRef({ text: '', at: 0 });
-  const restoreFocus = useRef(false);
+  const focusAfterClose = useRef<FocusAfterClose>(null);
 
   const selectedIndex = options.findIndex((option) => option.id === value);
   const selected = selectedIndex >= 0 ? options[selectedIndex] : undefined;
@@ -77,16 +82,19 @@ export function Selector<Id extends string>({
 
   // The trigger is hidden while the list is open, so focus can only return after the re-render.
   useEffect(() => {
-    if (!open && restoreFocus.current) {
-      restoreFocus.current = false;
-      triggerRef.current?.focus();
-    }
+    const target = focusAfterClose.current;
+    const trigger = triggerRef.current;
+    if (open || !target || !trigger) return;
+    focusAfterClose.current = null;
+    // Neighbours are looked up now, once the hidden controls are no longer inert.
+    const neighbour = target === 'trigger' ? null : tabbableNeighbour(trigger, target === 'next' ? 1 : -1);
+    (neighbour ?? trigger).focus();
   }, [open]);
 
   useEffect(() => {
     if (!open) return;
     const onPointerDown = (event: PointerEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) closeList(false);
+      if (!rootRef.current?.contains(event.target as Node)) closeList(null);
     };
     document.addEventListener('pointerdown', onPointerDown);
     return () => document.removeEventListener('pointerdown', onPointerDown);
@@ -98,8 +106,8 @@ export function Selector<Id extends string>({
     onOpenChange(true);
   }
 
-  function closeList(restore = true) {
-    restoreFocus.current = restore;
+  function closeList(focusAfter: FocusAfterClose = 'trigger') {
+    focusAfterClose.current = focusAfter;
     setOpen(false);
     onOpenChange(false);
   }
@@ -153,9 +161,9 @@ export function Selector<Id extends string>({
         closeList();
         break;
       case 'Tab':
-        // Return focus to the visible trigger; the following Tab advances normally.
+        // Leave the list in the Tab direction without selecting the active option.
         event.preventDefault();
-        closeList();
+        closeList(event.shiftKey ? 'previous' : 'next');
         break;
       default:
         if (event.key.length === 1 && event.key.trim()) jumpToTyped(event.key);
@@ -222,4 +230,18 @@ function markScrollEdges(list: HTMLElement) {
   const overflows = list.scrollHeight - list.clientHeight > 1;
   list.dataset.moreAbove = String(overflows && list.scrollTop > 1);
   list.dataset.moreBelow = String(overflows && list.scrollTop + list.clientHeight < list.scrollHeight - 1);
+}
+
+const TABBABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+/** The next or previous control in tab order that is enabled, visible and not inert. */
+function tabbableNeighbour(from: HTMLElement, step: 1 | -1): HTMLElement | null {
+  const tabbable = Array.from(from.ownerDocument.querySelectorAll<HTMLElement>(TABBABLE)).filter(
+    (el) =>
+      el === from ||
+      (!el.closest('[inert]') && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden'),
+  );
+  const index = tabbable.indexOf(from);
+  return index === -1 ? null : (tabbable[index + step] ?? null);
 }
