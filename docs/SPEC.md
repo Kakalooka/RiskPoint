@@ -37,6 +37,8 @@ Each question is presented as one centered question plus one typographic selecto
 
 ### Q2 — Annual revenue
 Question: "What's your annual revenue?"
+
+Display labels of the internal ranges carry a U+200A hair space on each side of the en dash (e.g. `€5M\u200A–\u200A€25M`), as approved for Build 1 (see `FINAL.md`). The plain spelling below is for readability.
 - Under €5M
 - €5M–€25M
 - €25M–€50M

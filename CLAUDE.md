@@ -9,7 +9,7 @@ This file routes Claude and other AI assistants to the correct project documents
 - **Original recruitment brief / authoritative source for assignment requirements**: Read [source/Zadanie_180hb.txt](source/Zadanie_180hb.txt)
 - **Original recruitment delivery context**: Read [source/Mail.txt](source/Mail.txt)
 
-The files in source/ are original source material. The files in docs/ contain interpreted product, UX, design, and implementation decisions developed from that source material.
+The files in source/ are original source material (personal contact details may be redacted). The files in docs/ contain interpreted product, UX, design, and implementation decisions developed from that source material.
 
 When a decision in docs/ differs from the original recruitment brief, do not assume it is an error. Identify the deviation explicitly and evaluate whether it is justified by the documented reasoning. Do not silently overwrite either the source requirement or the human-approved project decision.
 
@@ -18,6 +18,9 @@ When a decision in docs/ differs from the original recruitment brief, do not ass
 - **UX decisions, research, user insights**: Read [`docs/UX_RESEARCH.md`](docs/UX_RESEARCH.md)
 - **Design, visual direction, components**: Read [`docs/DESIGN.md`](docs/DESIGN.md)
 - **Implementation, specs, interactions**: Read [`docs/SPEC.md`](docs/SPEC.md)
+- **Approved release, frozen Build 1 and release procedure (release/deployment authority)**: Read [`docs/FINAL.md`](docs/FINAL.md)
+- **Branch roles, open issues, release invariants**: Read [`docs/REPOSITORY_STATE.md`](docs/REPOSITORY_STATE.md)
+- **Known UI / accessibility issues deferred to a separate, human-approved stage**: Read [`docs/UI_BACKLOG.md`](docs/UI_BACKLOG.md)
 
 Do not duplicate content across files. Reference the appropriate file instead.
 
@@ -32,7 +35,9 @@ Do not duplicate content across files. Reference the appropriate file instead.
 ### 2. Minimal Implementation
 - Build only what is needed for the current task
 - Do not add abstractions, refactor, or prepare for hypothetical future work
-- No app code, dependencies, CI, tests, or build infrastructure until explicitly needed
+- The project is in the maintenance phase: app code, tests, CI and build tooling exist. Do not add or change dependencies, CI, tests or build infrastructure unless the current task needs it.
+- Never modify `final/RiskPoint-final.html` or the `gh-pages` branch, and never treat intentional differences between `main` and the frozen Build 1 as defects (see `docs/FINAL.md`).
+- Do not change UI, copy, scoring or interaction behavior without an explicit human decision. Record known issues in `docs/UI_BACKLOG.md` instead.
 
 ### 3. Testing and Verification Required
 - **Before claiming work complete:**
@@ -58,4 +63,4 @@ Do not use CLAUDE.md as a knowledge base for product details, design decisions, 
 
 ---
 
-Generated for RiskPoint prototype bootstrap. Last updated: 2026-09-16.
+Generated for RiskPoint prototype bootstrap. Last updated: 2026-10-16 (maintenance-phase routing).
