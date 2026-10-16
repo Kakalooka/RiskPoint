@@ -68,6 +68,8 @@ test('hidden controls never receive focus while the list is open', async ({ page
 test('Tab from the open list moves on in one step and never changes the answer (RP-02)', async ({ page }) => {
   await choose(page, 'Choose industry', 'Healthcare');
   await page.getByRole('button', { name: 'Continue' }).click();
+  // Keyboard-only from here: park the pointer, since hovering an option makes it active.
+  await page.mouse.move(0, 0);
   const trigger = page.locator('.selector__trigger');
 
   // Q2 without an answer: Continue is disabled, so Tab goes to Back.
