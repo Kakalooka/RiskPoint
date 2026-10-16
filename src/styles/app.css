@@ -551,22 +551,22 @@ ul {
   animation-delay: calc(var(--reveal-start-ms) + 2 * var(--stagger-ms));
 }
 
+/* Explicitly suppress the higher-specificity exit animation as well. */
 @media (prefers-reduced-motion: reduce) {
-  :root {
-    --theme-ms: 200ms;
-  }
+  html { transition: none; }
 
   .assessment .stage,
+  .assessment[data-leaving='true'] .stage,
+  .assessment[data-leaving='true'] .assessment__footer,
   .reveal,
   .risk-accent.reveal,
-  .selector__list {
-    animation: fade 200ms ease both;
+  .selector__list,
+  .method {
+    animation: none;
     animation-delay: 0ms;
   }
 
-  .selector__list {
-    transform: translateX(-50%);
-  }
+  .selector__list { transform: translateX(-50%); }
 
   .button,
   .text-button,
@@ -574,7 +574,5 @@ ul {
   .selector__chevron,
   .selector__option,
   .progress__segment,
-  .stage__action {
-    transition: none;
-  }
+  .stage__action { transition: none; }
 }

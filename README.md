@@ -22,13 +22,18 @@ npm ci
 npm run dev
 npm test
 npm run build:all
-npm run verify:release
+npm run verify:baseline
+# npm run verify:release  # only for intentional, identical release rebuilds
 ```
 
-`build:all` emits a web build and `dist/RiskPoint.html`. `verify:release` compares the generated standalone HTML **byte for byte** to the approved, frozen `final/RiskPoint-final.html`. Mismatch means **STOP**, not an instruction to overwrite the approved artifact.
+`build:all` emits a web build and `dist/RiskPoint.html`. CI runs `verify:baseline`, which checks the approved, frozen `final/RiskPoint-final.html` against its immutable Git blob SHA. `verify:release` separately compares any new build **byte for byte** to the frozen file; run it before claiming identical reproduction. Candidate accessibility work deliberately does not replace the approved presentation.
+
+## Browser tests for the next iteration
+
+The source tree may evolve while the approved Build 1 HTML and `gh-pages` remain frozen. Chromium E2E tests run in a separate CI workflow. For a local E2E run, install the pinned runner without modifying the lockfile: `npm install --no-save --package-lock=false @playwright/test@1.56.1`, `npx playwright install chromium`, then `npx playwright test`. This transient dependency setup should eventually be moved into the lockfile.
 
 ## Branch roles
-- **`main`**: canonical approved Build 1 sources after consolidation.
+- **`main`**: canonical development sources; approved Build 1 HTML is frozen separately.
 - **`claude/final-build-clean-v01`**: preserved approval baseline for Build 1.
 - **`claude/final-build-v01`**: experimental visual branch (includes a plane absent from the approved presentation); retain for historical reference, not production.
 - **`gh-pages`**: independent deployment branch containing only the public HTML file.
