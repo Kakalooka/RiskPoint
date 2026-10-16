@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { QUESTIONS } from '../content';
-import type { Answers } from '../model/config';
+import { withAnswer, type Draft } from './draft';
 import { Progress } from './Progress';
 import { Selector } from './Selector';
 
-export type Draft = Partial<Answers>;
+export type { Draft };
 
 interface AssessmentProps {
   step: number;
@@ -21,6 +21,7 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
   const value = draft[question.key];
   const isLast = step === QUESTIONS.length - 1;
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const footerRef = useRef<HTMLElement>(null);
   const [selectorOpen, setSelectorOpen] = useState(false);
 
   useEffect(() => {
@@ -33,43 +34,46 @@ export function Assessment({ step, draft, leaving, focusOnMount, onAnswer, onBac
   }
 
   return (
-    // data-theme pins the dark tokens while the page behind transitions to light on exit.
-    <form className="assessment" data-theme="dark" data-leaving={leaving} data-selector-open={selectorOpen} inert={leaving} onSubmit={handleSubmit} noValidate>
-      <div className="stage" key={step}>
-        <h1
-          id="question-title"
-          ref={titleRef}
-          tabIndex={-1}
-          className="question-title"
-          data-long={question.title.length > 40}
-        >
-          {question.title}
-        </h1>
-
-        <Selector
-          placeholder={question.placeholder}
-          options={question.options}
-          value={value}
-          labelledBy="question-title"
-          onChange={(id) => onAnswer({ ...draft, [question.key]: id })}
-          onOpenChange={setSelectorOpen}
-        />
-
-        <div className="stage__action" inert={selectorOpen}>
-          <button type="submit" className="button button--primary" disabled={!value}>
-            {isLast ? 'See my risk' : 'Continue'}
-          </button>
+    <main className="assessment-page">
+      {/* data-theme pins the dark tokens while the page behind transitions to light on exit. */}
+      <form className="assessment" data-theme="dark" data-leaving={leaving} data-selector-open={selectorOpen} inert={leaving} onSubmit={handleSubmit} noValidate>
+        <div className="stage" key={step}>
+          <h1
+            id="question-title"
+            ref={titleRef}
+            tabIndex={-1}
+            className="question-title"
+            data-long={question.title.length > 40}
+          >
+            {question.title}
+          </h1>
+  
+          <Selector
+            placeholder={question.placeholder}
+            options={question.options}
+            value={value}
+            labelledBy="question-title"
+            onChange={(id) => onAnswer(withAnswer(draft, question.key, id))}
+            onOpenChange={setSelectorOpen}
+            boundaryRef={footerRef}
+          />
+  
+          <div className="stage__action" inert={selectorOpen}>
+            <button type="submit" className="button button--primary" disabled={!value}>
+              {isLast ? 'See my risk' : 'Continue'}
+            </button>
+          </div>
         </div>
-      </div>
-
-      <footer className="assessment__footer" inert={selectorOpen}>
-        {step > 0 && (
-          <button type="button" className="text-button assessment__back" onClick={onBack}>
-            Back
-          </button>
-        )}
-        <Progress step={step} total={QUESTIONS.length} />
-      </footer>
-    </form>
+  
+        <footer className="assessment__footer" ref={footerRef} inert={selectorOpen}>
+          {step > 0 && (
+            <button type="button" className="text-button assessment__back" onClick={onBack}>
+              Back
+            </button>
+          )}
+          <Progress step={step} total={QUESTIONS.length} />
+        </footer>
+      </form>
+    </main>
   );
 }

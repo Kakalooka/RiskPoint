@@ -43,7 +43,7 @@ npm run test:e2e
 - **`standalone`** tests `dist/RiskPoint.html` opened from disk.
 - **`frozen-build-1`** is a read-only smoke test of the approved `final/RiskPoint-final.html`.
 
-`tests/browser/known-ui-issues.spec.mjs` holds expected failures for deferred UI issues (see [`docs/UI_BACKLOG.md`](docs/UI_BACKLOG.md)). They document problems and do not fix them.
+The UI issues found in the 2026-10-16 audit are fixed in the sources and guarded by regular tests. See [`docs/UI_BACKLOG.md`](docs/UI_BACKLOG.md); the published Build 1 is unchanged.
 
 ## Branch roles
 - **`main`**: canonical development sources; approved Build 1 HTML is frozen separately.

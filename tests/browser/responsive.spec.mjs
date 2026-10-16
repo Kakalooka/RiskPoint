@@ -69,3 +69,65 @@ test('375×667: every Q1 option can be reached and chosen in the open list', asy
   await choose(page, 'Choose industry', 'Other');
   await expect(page.getByRole('button', { name: /Other/ })).toBeVisible();
 });
+
+const listBox = (page) => page.locator('.selector__list').boundingBox();
+
+for (const viewport of [
+  { width: 320, height: 568 },
+  { width: 375, height: 560 },
+  { width: 667, height: 375 },
+]) {
+  test(`${viewport.width}×${viewport.height}: open Q1 list stays above the footer and signals that it scrolls (N-01)`, async ({ page }, testInfo) => {
+    await page.setViewportSize(viewport);
+    await openApp(page, testInfo);
+    await page.getByRole('button', { name: /Choose industry/ }).click();
+    // Park the pointer outside the list: hovering an option makes it the active one.
+    await page.mouse.move(0, 0);
+    await settle(page);
+
+    const list = page.locator('.selector__list');
+    const box = await listBox(page);
+    const footerTop = (await page.locator('.assessment__footer').boundingBox()).y;
+    expect(box.y + box.height).toBeLessThanOrEqual(footerTop);
+    expect(box.y + box.height).toBeLessThanOrEqual(viewport.height);
+
+    // More options below: only the bottom edge fades.
+    await expect(list).toHaveAttribute('data-more-below', 'true');
+    await expect(list).toHaveAttribute('data-more-above', 'false');
+    await expect(list).toHaveCSS('mask-image', /linear-gradient/);
+
+    // Keyboard reaches the last option; it scrolls fully into view, clear of the fade.
+    await page.keyboard.press('End');
+    const last = page.getByRole('option', { name: 'Other' });
+    await expect(last).toBeFocused();
+    await expect(list).toHaveAttribute('data-more-below', 'false');
+    await expect(list).toHaveAttribute('data-more-above', 'true');
+    const lastBox = await last.boundingBox();
+    const scrolledBox = await listBox(page);
+    expect(lastBox.y + lastBox.height).toBeLessThanOrEqual(scrolledBox.y + scrolledBox.height + 1);
+
+    // Every option can still be chosen by pointer.
+    await page.keyboard.press('Home');
+    await expect(list).toHaveAttribute('data-more-above', 'false');
+    await last.scrollIntoViewIfNeeded();
+    await last.click();
+    await expect(page.getByRole('button', { name: /Other/ })).toBeVisible();
+  });
+}
+
+for (const viewport of [
+  { width: 1440, height: 900 },
+  { width: 768, height: 1024 },
+]) {
+  test(`${viewport.width}×${viewport.height}: the open list shows every option without scrolling or fade`, async ({ page }, testInfo) => {
+    await page.setViewportSize(viewport);
+    await openApp(page, testInfo);
+    await page.getByRole('button', { name: /Choose industry/ }).click();
+    await settle(page);
+    const list = page.locator('.selector__list');
+    expect(await list.evaluate((el) => el.scrollHeight - el.clientHeight)).toBe(0);
+    await expect(list).toHaveAttribute('data-more-below', 'false');
+    await expect(list).toHaveAttribute('data-more-above', 'false');
+    await expect(list).toHaveCSS('mask-image', 'none');
+  });
+}

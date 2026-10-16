@@ -38,6 +38,7 @@ The same component is used for all three questions: one centered line of text th
 - Closed: the placeholder ("Choose industry") or the chosen answer, with a chevron and a thin underline. It reads as interactive without looking like a form control.
 - Options are not visible before interaction.
 - Expanded: a minimal typographic list, unselected options dimmed, the active one at full contrast. The forward action is hidden while the list is open, and the list is positioned so the question does not move.
+  - On short screens the open list stays above the footer. When not all options fit, it ends halfway through an option and fades out only on the edge where more options continue. That fade is the only scroll cue: no scrollbar styling, arrows or extra copy. *(Quality pass 2026-10-16, see `UI_BACKLOG.md` N-01.)*
 - Selected is marked by weight and contrast, not colour alone, and carries no second accent. Visible focus state.
 - Not: radio buttons, cards, chips, pills, bordered rows, native select styling, icons or two-column layouts.
 

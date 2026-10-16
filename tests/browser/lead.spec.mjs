@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { completeAssessment, openApp } from './helpers.mjs';
+import { completeAssessment, contrast, openApp, settle } from './helpers.mjs';
 
 test('result needs no sign-up; prototype lead form validates and sends nothing', async ({ page }, testInfo) => {
   const requests = [];
@@ -38,4 +38,20 @@ test('result needs no sign-up; prototype lead form validates and sends nothing',
 
   // Nothing at all went over the network for the lead flow.
   expect(requests.slice(afterResult)).toEqual([]);
+});
+
+test('lead-form field underlines have at least 3:1 non-text contrast (N-02)', async ({ page }, testInfo) => {
+  await openApp(page, testInfo);
+  await completeAssessment(page, { industry: 'Technology', revenue: 'Under €5M', mfa: 'No' });
+  await page.getByRole('button', { name: 'See protection options' }).click();
+  // Measure the idle fields: the focus style intentionally strengthens the underline.
+  await page.evaluate(() => document.activeElement?.blur());
+  await settle(page);
+  const background = await page.evaluate(() => getComputedStyle(document.documentElement).backgroundColor);
+  for (const label of ['Work email', 'Company name']) {
+    const field = page.getByLabel(label);
+    const [border, width] = await field.evaluate((el) => [getComputedStyle(el).borderBottomColor, getComputedStyle(el).borderBottomWidth]);
+    expect(width, `${label} keeps a 1px underline`).toBe('1px');
+    expect(contrast(border, background), label).toBeGreaterThanOrEqual(3);
+  }
 });

@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { openApp } from './helpers.mjs';
+import { choose, openApp } from './helpers.mjs';
 
 /**
- * Keyboard behavior of the typographic listbox as implemented on main.
- * Tab / Shift+Tab inside the open list currently close it and return focus to the
- * trigger; whether to adopt the APG "select and move on" behavior is an open decision
- * (docs/UI_BACKLOG.md, RP-02). These tests pin the current behavior until then.
+ * Keyboard behavior of the typographic listbox.
+ * Tab / Shift+Tab inside the open list close it WITHOUT changing the answer and move
+ * focus to the next / previous control, as if the list were not open (RP-02).
+ * Choosing (Enter / Space / click) and confirming (Continue) stay separate steps.
  */
 
 test.beforeEach(async ({ page }, testInfo) => {
@@ -21,6 +21,7 @@ test('listbox excludes visually hidden controls from tab order and restores focu
   await expect(page.locator('.stage__action')).toHaveAttribute('inert', '');
   await expect(page.locator('.assessment__footer')).toHaveAttribute('inert', '');
   await expect(page.getByRole('listbox')).toBeVisible();
+  // Q1 without an answer: Continue is disabled and there is no Back, so focus stays on the trigger.
   await page.keyboard.press('Tab');
   await expect(trigger).toBeFocused();
   await expect(page.locator('.stage__action')).not.toHaveAttribute('inert');
@@ -33,7 +34,7 @@ test('listbox excludes visually hidden controls from tab order and restores focu
   await expect(page.getByRole('button', { name: 'Continue' })).toBeFocused();
 });
 
-test('Shift+Tab in the open list closes it without selecting and returns focus to the trigger', async ({ page }) => {
+test('Shift+Tab in the open list closes it without selecting; with nothing before it, focus stays on the trigger', async ({ page }) => {
   const trigger = page.getByRole('button', { name: /Choose industry/ });
   await trigger.focus();
   await page.keyboard.press('Enter');
@@ -57,7 +58,55 @@ test('hidden controls never receive focus while the list is open', async ({ page
     const inList = await page.evaluate(() => document.activeElement?.getAttribute('role'));
     expect(inList).toBe('option');
   }
+  // Tab leaves the list straight to the next control, now visible again; the answer is unchanged.
   await page.keyboard.press('Tab');
+  await expect(page.getByRole('listbox')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Continue' })).toBeFocused();
+  await expect(trigger).toContainText('Technology');
+});
+
+test('Tab from the open list moves on in one step and never changes the answer (RP-02)', async ({ page }) => {
+  await choose(page, 'Choose industry', 'Healthcare');
+  await page.getByRole('button', { name: 'Continue' }).click();
+  // Keyboard-only from here: park the pointer, since hovering an option makes it active.
+  await page.mouse.move(0, 0);
+  const trigger = page.locator('.selector__trigger');
+
+  // Q2 without an answer: Continue is disabled, so Tab goes to Back.
+  await trigger.focus();
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('listbox')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Back' })).toBeFocused();
+  await expect(trigger).toContainText('Choose revenue');
+  await expect(page.getByRole('button', { name: 'Continue' })).toBeDisabled();
+
+  // With an answer: moving the active option and tabbing away keeps the chosen answer.
+  await trigger.focus();
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('Enter');
+  await expect(trigger).toContainText('Under €5M');
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('End');
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('button', { name: 'Continue' })).toBeFocused();
+  await expect(trigger).toContainText('Under €5M');
+  await expect(page.getByRole('heading', { name: 'What’s your annual revenue?' })).toBeVisible();
+
+  // Shift+Tab from the open list: no earlier control on the page, so focus returns to the trigger.
+  await trigger.focus();
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Shift+Tab');
+  await expect(page.getByRole('listbox')).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+  await expect(trigger).toContainText('Under €5M');
+
+  // Normal tab order around the closed selector is unchanged.
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('button', { name: 'Continue' })).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
   await expect(trigger).toBeFocused();
 });
 
