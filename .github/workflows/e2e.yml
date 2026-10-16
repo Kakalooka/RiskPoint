@@ -16,8 +16,17 @@ jobs:
         with:
           node-version: '22'
           cache: npm
+      # Playwright and axe-core are locked in package-lock.json; no ad-hoc installs.
       - run: npm ci
-      # Pinned temporary runner; no deployment or frozen-artifact changes.
-      - run: npm install --no-save --package-lock=false @playwright/test@1.56.1
       - run: npx playwright install --with-deps chromium
-      - run: npx playwright test
+      # Builds dist/ (web + standalone) and runs the preview, standalone and
+      # read-only frozen Build 1 projects. No deployment or artifact changes.
+      - run: npm run test:e2e
+      - if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

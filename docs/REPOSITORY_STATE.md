@@ -11,7 +11,7 @@ No branches, history, original source material or deployed pages are deleted. Th
 
 ## Open issues (separate changes, not part of structural cleanup)
 - Candidate a11y fixes: controls obscured by the expanded listbox are inert; listbox Tab/Escape restores trigger focus; reduced-motion also suppresses the exit animation. Changes are **not** deployed.
-- Chromium browser smoke tests added for assessment flow, keyboard, reduced motion and mobile horizontal overflow.
+- Chromium E2E (`npm run test:e2e`, Playwright locked in `package-lock.json`) runs against the production build, the standalone file and, read-only, the frozen Build 1. Coverage: flow, exact results, keyboard, reduced motion, responsive layout, lead form without network traffic, axe WCAG A/AA. Deferred UI issues are kept as expected failures in `tests/browser/known-ui-issues.spec.mjs`.
 - Real-world validation of illustrative loss ranges before any production use.
 - `source/Mail.txt`: the third party's personal contact details (name, email, phone, office address) are redacted in the current tree; task content and deadlines are unchanged. Git history and older public branches still contain the original. Rewriting history is a separate owner decision (Issue #3) and has not been done.
 - Configure main branch protection via GitHub settings if needed.
