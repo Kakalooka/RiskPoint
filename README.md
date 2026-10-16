@@ -30,7 +30,20 @@ npm run verify:baseline
 
 ## Browser tests for the next iteration
 
-The source tree may evolve while the approved Build 1 HTML and `gh-pages` remain frozen. Chromium E2E tests run in a separate CI workflow. For a local E2E run, install the pinned runner without modifying the lockfile: `npm install --no-save --package-lock=false @playwright/test@1.56.1`, `npx playwright install chromium`, then `npx playwright test`. This transient dependency setup should eventually be moved into the lockfile.
+The source tree may evolve while the approved Build 1 HTML and `gh-pages` remain frozen. Chromium E2E tests run in a separate CI workflow. Playwright and axe-core are pinned in `package-lock.json`:
+
+```bash
+npm ci
+npx playwright install chromium
+npm run test:e2e
+```
+
+`test:e2e` builds `dist/` and runs three Playwright projects:
+- **`preview`** tests the production web build through `vite preview`: flow, exact LOW / MID / HIGH results, navigation, keyboard, reduced motion, responsive layout from 320 px to 1440 px, the prototype lead form with no network traffic, and axe WCAG A/AA checks.
+- **`standalone`** tests `dist/RiskPoint.html` opened from disk.
+- **`frozen-build-1`** is a read-only smoke test of the approved `final/RiskPoint-final.html`.
+
+`tests/browser/known-ui-issues.spec.mjs` holds expected failures for deferred UI issues (see [`docs/UI_BACKLOG.md`](docs/UI_BACKLOG.md)). They document problems and do not fix them.
 
 ## Branch roles
 - **`main`**: canonical development sources; approved Build 1 HTML is frozen separately.
