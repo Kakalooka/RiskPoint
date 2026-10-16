@@ -1,7 +1,7 @@
 # Repository state and outstanding work — 2026-10-16
 
 ## Canonical organization
-- `main`: canonical development sources; the approved Build 1 HTML is frozen independently.
+- `main`: canonical development sources; approved release archives in `final/` (Build 1, Build 2) are immutable.
 - `claude/final-build-clean-v01`: preserved audit/approved baseline.
 - `claude/final-build-v01`: archived line of visual experiments, including the result plane; do not deploy as Build 1.
 - `gh-pages`: frozen standalone deployment, independent Git history.
@@ -17,7 +17,7 @@ No branches, history, original source material or deployed pages are deleted. Th
 - Configure main branch protection via GitHub settings if needed.
 
 ## UI quality pass
-The UI and accessibility issues found in the 2026-10-16 audit are fixed in the sources: open-list overlap on short viewports, field contrast, the missing `main` landmark, selector typing, and Tab behavior. Details and regression tests are in [`UI_BACKLOG.md`](UI_BACKLOG.md). The published Build 1 is unchanged until a new release is approved.
+The UI and accessibility issues found in the 2026-10-16 audit are fixed and **published in Build 2** (2026-10-16): open-list overlap on short viewports, field contrast, the missing `main` landmark, selector typing, and Tab behavior. Details and regression tests are in [`UI_BACKLOG.md`](UI_BACKLOG.md).
 
 ## Release invariants
-Never update `gh-pages` automatically. `verify:baseline` guards the immutable Build 1 file on `main`, and `verify:deployment` (read-only, *RiskPoint release guard* workflow) checks that `gh-pages:index.html`, and on scheduled/manual runs the live page, are still that blob. Candidate sources may differ. Procedure: [`RELEASE.md`](RELEASE.md). New public releases require explicit human approval, review of browser tests and deliberate publication.
+Never update `gh-pages` automatically. `verify:baseline` guards every immutable archive in `final/`, and `verify:deployment` (read-only, *RiskPoint release guard* workflow) checks that `gh-pages:index.html`, and on scheduled/manual runs the live page, are the current approved blob (Build 2). Candidate sources may differ. Procedure and rollback: [`RELEASE.md`](RELEASE.md).

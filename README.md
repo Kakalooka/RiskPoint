@@ -2,7 +2,7 @@
 
 **Interactive B2B cyber-risk calculator prototype**, created for the 180HEARTBEATS AI Prototype Builder task.
 
-**[Live demo](https://kakalooka.github.io/RiskPoint/)** · [Approved HTML](final/RiskPoint-final.html) · [Release status](docs/FINAL.md) · [Repository state](docs/REPOSITORY_STATE.md)
+**[Live demo](https://kakalooka.github.io/RiskPoint/)** · [Published HTML (Build 2)](final/RiskPoint-build-2.html) · [Release status](docs/FINAL.md) · [Repository state](docs/REPOSITORY_STATE.md)
 
 Three deliberate steps: **Industry → Annual revenue → MFA coverage → LOW / MID / HIGH result**. A separately computed illustrative financial-impact range and a protection-oriented CTA follow. No registration is required to see a result. There is no backend and the lead form does not submit real data.
 
@@ -28,11 +28,11 @@ npm run verify:baseline
 # npm run verify:release  # only for intentional, identical release rebuilds
 ```
 
-`build:all` emits a web build and `dist/RiskPoint.html`. CI runs `verify:baseline`, which checks the approved, frozen `final/RiskPoint-final.html` against its immutable Git blob SHA. `verify:release` separately compares any new build **byte for byte** to the frozen file; run it before claiming identical reproduction. Candidate accessibility work deliberately does not replace the approved presentation.
+`build:all` emits a web build and `dist/RiskPoint.html`. CI runs `verify:baseline`, which checks every approved archive in `final/` (Build 1 and the published Build 2) against its immutable Git blob SHA. `verify:release` compares a fresh build **byte for byte** with the current approved release (Build 2); it fails by design once the sources move on. `verify:deployment` checks that `gh-pages` serves the approved release.
 
 ## Browser tests for the next iteration
 
-The source tree may evolve while the approved Build 1 HTML and `gh-pages` remain frozen. Chromium E2E tests run in a separate CI workflow. Playwright and axe-core are pinned in `package-lock.json`:
+The source tree may evolve while the approved archives in `final/` and the published `gh-pages` page stay fixed until the next approved release. Chromium E2E tests run in a separate CI workflow. Playwright and axe-core are pinned in `package-lock.json`:
 
 ```bash
 npm ci
@@ -40,15 +40,16 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-`test:e2e` builds `dist/` and runs three Playwright projects:
+`test:e2e` builds `dist/` and runs four Playwright projects:
 - **`preview`** tests the production web build through `vite preview`: flow, exact LOW / MID / HIGH results, navigation, keyboard, reduced motion, responsive layout from 320 px to 1440 px, the prototype lead form with no network traffic, and axe WCAG A/AA checks.
 - **`standalone`** tests `dist/RiskPoint.html` opened from disk.
 - **`frozen-build-1`** is a read-only smoke test of the approved `final/RiskPoint-final.html`.
+- **`build-2`** runs the full suite against the published Build 2 archive `final/RiskPoint-build-2.html`.
 
-The UI issues found in the 2026-10-16 audit are fixed in the sources and guarded by regular tests. See [`docs/UI_BACKLOG.md`](docs/UI_BACKLOG.md); the published Build 1 is unchanged.
+The UI issues found in the 2026-10-16 audit are fixed and published in Build 2; regular tests guard them (see [`docs/UI_BACKLOG.md`](docs/UI_BACKLOG.md)). The `build-2` Playwright project runs the full suite against the published file.
 
 ## Branch roles
-- **`main`**: canonical development sources; approved Build 1 HTML is frozen separately.
+- **`main`**: canonical development sources; the approved release archives in `final/` are immutable.
 - **`claude/final-build-clean-v01`**: preserved approval baseline for Build 1.
 - **`claude/final-build-v01`**: experimental visual branch (includes a plane absent from the approved presentation); retain for historical reference, not production.
 - **`gh-pages`**: independent deployment branch containing only the public HTML file.
